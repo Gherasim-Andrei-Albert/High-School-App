@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Matematică",
+    "lessonsPerWeek": 4
+  },
+  {
+    "name": "Informatiă",
+    "lessonsPerWeek": 4
+  },
+  {
+    "name": "Literatură",
+    "lessonsPerWeek": 4
+  },
+  {
+    "name": "Engleză",
+    "lessonsPerWeek": 4
+  },
+  {
+    "name": "Germană",
+    "lessonsPerWeek": 2
+  },
+  {
+    "name": "Biologie",
+    "lessonsPerWeek": 2
+  },
+  {
+    "name": "Fizică",
+    "lessonsPerWeek": 2
+  },
+  {
+    "name": "Geografie",
+    "lessonsPerWeek": 1
+  },
+  {
+    "name": "Istorie",
+    "lessonsPerWeek": 1
+  },
+  {
+    "name": "Educație Fizică",
+    "lessonsPerWeek": 1
+  },
+  {
+    "name": "TIC",
+    "lessonsPerWeek": 1
+  },
+  {
+    "name": "Educație Plastică",
+    "lessonsPerWeek": 1
+  }
+]
