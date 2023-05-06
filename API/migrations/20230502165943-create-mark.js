@@ -9,10 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      subjectId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       lessonId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -32,15 +28,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-      },
-    });
-    await queryInterface.addConstraint('Marks', {
-      fields: ['subjectId'],
-      type: 'FOREIGN KEY',
-      name: 'FK_Marks_Subjects',
-      references: {
-        table: 'Subjects',
-        field: 'id',
       },
     });
     await queryInterface.addConstraint('Marks', {
