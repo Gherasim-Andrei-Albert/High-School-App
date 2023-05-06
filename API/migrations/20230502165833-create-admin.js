@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      email: {
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          isEmail: true,
+        },
+        type: Sequelize.STRING,
+      },
       hashedPassword: {
         allowNull: false,
         defaultValue: 'test',
