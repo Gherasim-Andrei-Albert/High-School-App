@@ -2,7 +2,7 @@
 
 call npx sequelize-cli model:generate --name Admin --attributes hashedPassword:string
 
-call npx sequelize-cli model:generate --name Subject --attributes name:string,level:integer
+call npx sequelize-cli model:generate --name Subject --attributes name:string
 
 call npx sequelize-cli model:generate --name Teacher --attributes firstName:string,lastName:string,phone:string,email:string,address:string,hashedPassword:string
 
