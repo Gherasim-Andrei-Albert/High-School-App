@@ -17,9 +17,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      enrolmentDate: {
+      enrolmentYear: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.INTEGER,
       },
       grade: {
         allowNull: false,
