@@ -48,6 +48,7 @@ module.exports = {
       email: {
         validate: {
           notEmpty: true,
+          isEmail: true,
         },
         type: Sequelize.STRING,
       },
