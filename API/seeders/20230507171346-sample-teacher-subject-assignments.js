@@ -16,7 +16,7 @@ module.exports = {
       }
     );
 
-    const multiSpecialisedTeacher = teachers.pop();
+    const multiSpecialisedTeacher = teachers.shift();
 
     const assignments = subjects
       .map((subject) => [
