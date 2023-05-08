@@ -2,44 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Teachers', {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      firstName: {
+      isAdmin: {
         allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      lastName: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      phone: {
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
       email: {
         allowNull: false,
         validate: {
           notEmpty: true,
           isEmail: true,
-        },
-        type: Sequelize.STRING,
-      },
-      address: {
-        validate: {
-          notEmpty: true,
         },
         type: Sequelize.STRING,
       },
@@ -61,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Teachers');
+    await queryInterface.dropTable('Users');
   },
 };

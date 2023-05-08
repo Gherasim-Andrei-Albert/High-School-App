@@ -2,11 +2,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Parents', {
+    await queryInterface.createTable('PersonDetails', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      associatedAccountId: {
         type: Sequelize.INTEGER,
       },
       firstName: {
@@ -29,22 +32,7 @@ module.exports = {
         },
         type: Sequelize.STRING,
       },
-      email: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          isEmail: true,
-        },
-        type: Sequelize.STRING,
-      },
       address: {
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      hashedPassword: {
-        allowNull: false,
         validate: {
           notEmpty: true,
         },
@@ -59,8 +47,17 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+    await queryInterface.addConstraint('PersonDetails', {
+      fields: ['associatedAccountId'],
+      type: 'FOREIGN KEY',
+      name: 'FK_PersonDetails_Users',
+      references: {
+        table: 'Users',
+        field: 'id',
+      },
+    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Parents');
+    await queryInterface.dropTable('PersonDetails');
   },
 };

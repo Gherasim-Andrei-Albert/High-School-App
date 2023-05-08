@@ -3,6 +3,7 @@ import { Group } from './group';
 import { Parent } from './parent';
 import { Absence } from './absence';
 import { Mark } from './mark';
+import { User } from './user';
 
 @Table
 export class Student extends Model {
@@ -28,53 +29,6 @@ export class Student extends Model {
   })
   grade: number;
 
-  @Column({
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  })
-  firstName: string;
-
-  @Column({
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  })
-  lastName: string;
-
-  @Column({
-    validate: {
-      notEmpty: true,
-    },
-  })
-  phone: string;
-
-  @Column({
-    validate: {
-      notEmpty: true,
-    },
-  })
-  email: string;
-
-  @Column({
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-      isEmail: true,
-    },
-  })
-  address: string;
-
-  @Column({
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  })
-  hashedPassword: string;
-
   @HasMany(() => Mark)
   marks: Mark[];
 
@@ -86,4 +40,7 @@ export class Student extends Model {
 
   @BelongsTo(() => Group)
   group: Group;
+
+  @BelongsTo(() => User)
+  account: User[];
 }

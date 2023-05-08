@@ -1,11 +1,19 @@
 'use strict';
-const bcrypt = require('bcrypt');
+let sampleTeachersJSON = require('../sampleData/teachers.json');
+let sampleParentsJSON = require('../sampleData/parents.json');
 let sampleStudentsJSON = require('../sampleData/students.json');
-const sampleDataConfig = require('../config/sampleDataConfig.json');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const users = await queryInterface.sequelize.query('SELECT id FROM Users', {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
+    const teachersAccounts = sampleTeachersJSON.map(() => users.shift());
+    const parentsAccounts = sampleParentsJSON.map(() => users.shift());
+    const studentsAccounts = sampleStudentsJSON.map(() => users.shift());
+
     const parents = await queryInterface.sequelize.query(
       'SELECT id FROM Parents',
       {
@@ -19,16 +27,13 @@ module.exports = {
       }
     );
 
-    let sampleStudents = await Promise.all(
-      sampleStudentsJSON.map(async (student, studentIndex) => ({
-        parentId: parents.pop().id,
-        groupId: groups[Math.trunc(studentIndex / 30)].id,
-        enrolmentYear: 2022,
-        grade: groups[Math.trunc(studentIndex / 30)].grade,
-        ...student,
-        hashedPassword: await bcrypt.hash(sampleDataConfig.studentPassword, 10),
-      }))
-    );
+    let sampleStudents = studentsAccounts.map((account, studentIndex) => ({
+      parentId: parents.shift().id,
+      groupId: groups[Math.trunc(studentIndex / 30)].id,
+      accountId: account.id,
+      enrolmentYear: 2022,
+      grade: groups[Math.trunc(studentIndex / 30)].grade,
+    }));
 
     const currentDate = new Date();
     await queryInterface.bulkInsert(

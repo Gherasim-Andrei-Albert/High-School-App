@@ -17,6 +17,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      accountId: {
+        type: Sequelize.INTEGER,
+      },
       enrolmentYear: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -24,48 +27,6 @@ module.exports = {
       grade: {
         allowNull: false,
         type: Sequelize.INTEGER,
-      },
-      firstName: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      lastName: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      phone: {
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
-      },
-      email: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          isEmail: true,
-        },
-        type: Sequelize.STRING,
-      },
-      address: {
-        validate: {
-          notEmpty: true,
-          isEmail: true,
-        },
-        type: Sequelize.STRING,
-      },
-      hashedPassword: {
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-        },
-        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -91,6 +52,15 @@ module.exports = {
       name: 'FK_Students_Groups',
       references: {
         table: 'Groups',
+        field: 'id',
+      },
+    });
+    await queryInterface.addConstraint('Students', {
+      fields: ['accountId'],
+      type: 'FOREIGN KEY',
+      name: 'FK_Students_Users',
+      references: {
+        table: 'Users',
         field: 'id',
       },
     });
