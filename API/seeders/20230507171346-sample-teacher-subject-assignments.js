@@ -24,11 +24,11 @@ module.exports = {
           subjectId: subject.id,
           teacherId: ['Literatură', 'Engleză', 'Germană'].includes(subject.name)
             ? multiSpecialisedTeacher.id
-            : teachers.pop().id,
+            : teachers.shift().id,
         },
         ...[...Array(3).keys()].map(() => ({
           subjectId: subject.id,
-          teacherId: teachers.pop().id,
+          teacherId: teachers.shift().id,
         })),
       ])
       .flat();
