@@ -14,9 +14,7 @@ export class Student extends Model {
   groupId: number;
 
   @ForeignKey(() => Parent)
-  @Column({
-    allowNull: false,
-  })
+  @Column
   parentId: number;
 
   @Column({

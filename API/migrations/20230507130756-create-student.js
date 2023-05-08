@@ -14,7 +14,6 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       parentId: {
-        allowNull: false,
         type: Sequelize.INTEGER,
       },
       accountId: {
