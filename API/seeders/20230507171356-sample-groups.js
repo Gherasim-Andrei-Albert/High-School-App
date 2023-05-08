@@ -14,7 +14,7 @@ module.exports = {
     const nrOfGroupsPerGrade = 4;
     const groups = [...Array(nrOfGrades * nrOfGroupsPerGrade).keys()].map(
       (groupIndex) => ({
-        masterTeacherId: teachers.pop().id,
+        masterTeacherId: teachers.shift().id,
         grade: 9 + Math.trunc(groupIndex / 4),
         name: ['A', 'B', 'C', 'D'][groupIndex % 4],
         academicYear: 2022,
