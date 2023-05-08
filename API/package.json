@@ -37,6 +37,8 @@
     "@types/http-errors": "^1.8.1",
     "@types/morgan": "^1.9.3",
     "@types/node": "^16.18.25",
+    "@types/passport": "^1.0.12",
+    "@types/passport-local": "^1.0.35",
     "@types/validator": "^13.7.15",
     "nodemon": "^2.0.15",
     "sequelize-cli": "^6.6.0",
