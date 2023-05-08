@@ -1,7 +1,16 @@
-import { Table, Column, Model } from 'sequelize-typescript';
+import { Table, Column, Model, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Group } from './group';
+import { User } from './user';
 
 @Table
 export class Admin extends Model {
+
+  @ForeignKey(() => User)
+  @Column({
+    allowNull: false,
+  })
+  accountId: number;
+
   @Column({
     allowNull: false,
     defaultValue: 'test',
@@ -20,4 +29,7 @@ export class Admin extends Model {
     },
   })
   hashedPassword: string;
+
+  @BelongsTo(() => User)
+  account: User[];
 }

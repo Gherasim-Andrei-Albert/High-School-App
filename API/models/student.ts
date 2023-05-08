@@ -17,6 +17,12 @@ export class Student extends Model {
   @Column
   parentId: number;
 
+  @ForeignKey(() => User)
+  @Column({
+    allowNull: false,
+  })
+  accountId: number;
+
   @Column({
     allowNull: false,
   })

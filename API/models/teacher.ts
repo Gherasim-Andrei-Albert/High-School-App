@@ -1,4 +1,4 @@
-import { Table, Model, HasMany, BelongsToMany, HasOne, BelongsTo } from 'sequelize-typescript';
+import { Table, Model, HasMany, BelongsToMany, HasOne, BelongsTo, Column, ForeignKey } from 'sequelize-typescript';
 import { Lesson } from './lesson';
 import { Subject } from './subject';
 import { TeacherSubjectAssignment } from './teacherSubjectAssignment';
@@ -7,6 +7,12 @@ import { User } from './user';
 
 @Table
 export class Teacher extends Model {
+
+  @ForeignKey(() => User)
+  @Column({
+    allowNull: false,
+  })
+  accountId: number;
 
   @HasMany(() => Lesson)
   lessons: Lesson[];
