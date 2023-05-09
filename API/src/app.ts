@@ -6,10 +6,15 @@ import logger from 'morgan';
 import { Sequelize } from 'sequelize-typescript';
 import dotenv from 'dotenv';
 dotenv.config({ path: path.join(__dirname, '..', 'config.env') });
+import passport from './middlewares/auth';
 
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokensRouter from './routes/tokens';
+import groupsRouter from './routes/groups';
+import lessonsRouter from './routes/lessons';
+import marksRouter from './routes/marks';
+import absencesRouter from './routes/absences';
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Teacher } from '../models/teacher';
@@ -73,6 +78,20 @@ class App {
     this.app.use('/', indexRouter);
     this.app.use('/users', usersRouter);
     this.app.use('/tokens', tokensRouter);
+    this.app.use('/lessons',
+      passport.authenticate('jwt', { session: false }), lessonsRouter);
+    this.app.use('/groups',
+      passport.authenticate('jwt', { session: false }), groupsRouter);
+    this.app.use('/marks',
+      passport.authenticate('jwt', { session: false }), marksRouter);
+    this.app.use('/absences',
+      passport.authenticate('jwt', { session: false }), absencesRouter);
+
+    this.app.use((err: any, req: any, res: any, next: any) => {
+      console.log(err);
+      res.status(err.status || 500);
+      res.json({ msg: 'An error occured.' });
+    });
   }
 
 }
