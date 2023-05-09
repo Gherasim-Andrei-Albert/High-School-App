@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const groups = await queryInterface.sequelize.query(
-      'SELECT id, grade, name FROM Groups',
+      'SELECT id, grade, name FROM `Groups`',
       {
         type: Sequelize.QueryTypes.SELECT,
       }

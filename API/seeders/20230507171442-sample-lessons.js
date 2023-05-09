@@ -14,14 +14,14 @@ module.exports = {
     );
 
     const groups = await queryInterface.sequelize.query(
-      'SELECT id FROM Groups',
+      'SELECT id FROM `Groups`',
       {
         type: Sequelize.QueryTypes.SELECT,
       }
     );
 
     const groupsDetails = await queryInterface.sequelize.query(
-      'SELECT id, name, grade FROM Groups',
+      'SELECT id, name, grade FROM `Groups`',
       {
         type: Sequelize.QueryTypes.SELECT,
       }

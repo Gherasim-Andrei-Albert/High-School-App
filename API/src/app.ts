@@ -46,11 +46,14 @@ class App {
       database: process.env.DB_NAME,
       host: process.env.DB_HOST,
       dialect: 'mysql',
-      pool: {
-        max: 1,
-        min: 1,
-        idle: 10000
+      dialectOptions: {
+        connectTimeout: 100000
       },
+      // pool: {
+      //   max: 1,
+      //   min: 1,
+      //   idle: 10000
+      // },
       models: [
         User,
         PersonDetails,

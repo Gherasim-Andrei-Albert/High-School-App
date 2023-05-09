@@ -20,8 +20,9 @@ module.exports = {
         type: Sequelize.QueryTypes.SELECT,
       }
     );
+
     const groups = await queryInterface.sequelize.query(
-      'SELECT id, grade FROM Groups',
+      'SELECT id, grade FROM `Groups`',
       {
         type: Sequelize.QueryTypes.SELECT,
       }
