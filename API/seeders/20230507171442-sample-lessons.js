@@ -265,7 +265,8 @@ module.exports = {
             (group) =>
               !(
                 group.groupId === timetableGroupId &&
-                group.times === pickedSubjectGroupAssignment.times
+                group.times === pickedSubjectGroupAssignment.times &&
+                group.subjectId === pickedSubjectGroupAssignment.subjectId
               )
           );
           teachersWithGroupSubjectAssignments =
