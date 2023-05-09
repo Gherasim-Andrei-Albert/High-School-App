@@ -59,7 +59,7 @@ export class Lesson extends Model {
   marks: Mark[];
 
   @HasMany(() => Absence)
-  abbsences: Mark[];
+  absences: Mark[];
 
   @BelongsTo(() => Subject)
   subject: Subject;

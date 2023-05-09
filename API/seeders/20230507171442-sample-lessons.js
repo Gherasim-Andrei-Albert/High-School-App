@@ -274,7 +274,7 @@ module.exports = {
                 teachersWithGroupSubjectAssignment.groups.length !== 0
             );
           timetable[dayIndex].push({
-            teacherID: pickedTeacher.teacherId,
+            teacherId: pickedTeacher.teacherId,
             subjectId: pickedSubjectGroupAssignment.subjectId,
             groupId: pickedSubjectGroupAssignment.groupId,
           });

@@ -31,5 +31,5 @@ export class Admin extends Model {
   hashedPassword: string;
 
   @BelongsTo(() => User)
-  account: User[];
+  account: User;
 }

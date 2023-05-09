@@ -24,5 +24,5 @@ export class Teacher extends Model {
   subjects: Teacher[];
 
   @BelongsTo(() => User)
-  account: User[];
+  account: User;
 }

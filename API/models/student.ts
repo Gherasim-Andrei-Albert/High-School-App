@@ -37,7 +37,7 @@ export class Student extends Model {
   marks: Mark[];
 
   @HasMany(() => Absence)
-  abssences: Absence[];
+  absences: Absence[];
 
   @BelongsTo(() => Parent)
   parent: Parent;
@@ -46,5 +46,5 @@ export class Student extends Model {
   group: Group;
 
   @BelongsTo(() => User)
-  account: User[];
+  account: User;
 }

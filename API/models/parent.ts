@@ -16,5 +16,5 @@ export class Parent extends Model {
   chlidren: Student[];
 
   @BelongsTo(() => User)
-  account: User[];
+  account: User;
 }

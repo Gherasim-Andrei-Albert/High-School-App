@@ -2,6 +2,7 @@ import { Table, Column, Model, ForeignKey, HasMany, HasOne, BelongsTo } from 'se
 import { Teacher } from './teacher';
 import { Student } from './student';
 import { Classroom } from './classroom';
+import { Lesson } from './lesson';
 
 @Table
 export class Group extends Model {
@@ -31,6 +32,9 @@ export class Group extends Model {
 
   @HasMany(() => Student)
   students: Student[];
+
+  @HasMany(() => Lesson)
+  lessons: Lesson[];
 
   @HasOne(() => Classroom)
   group: Classroom;

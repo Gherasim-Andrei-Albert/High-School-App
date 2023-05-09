@@ -5,12 +5,6 @@ import { Subject } from './subject';
 
 @Table
 export class Mark extends Model {
-  @ForeignKey(() => Subject)
-  @Column({
-    allowNull: false,
-  })
-  subjectId: number;
-
   @ForeignKey(() => Lesson)
   @Column({
     allowNull: false,
