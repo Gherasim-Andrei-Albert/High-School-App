@@ -2,7 +2,6 @@ import { Table, Column, Model, HasOne } from 'sequelize-typescript';
 import { Parent } from './parent';
 import { Student } from './student';
 import { Teacher } from './teacher';
-import { PersonDetails } from './personDetails';
 
 @Table
 export class User extends Model {
@@ -31,9 +30,6 @@ export class User extends Model {
     },
   })
   isAdmin: boolean;
-
-  @HasOne(() => PersonDetails)
-  personDetails: PersonDetails;
 
   @HasOne(() => Teacher)
   teacherDetails: Teacher;

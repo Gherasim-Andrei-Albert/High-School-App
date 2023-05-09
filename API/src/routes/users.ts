@@ -2,7 +2,6 @@ import express from 'express';
 import { getLogger } from '@/utils/loggers';
 import passport from '../middlewares/auth';
 import { User } from '../../models/user';
-import { PersonDetails } from '../../models/personDetails';
 const router = express.Router();
 const logger = getLogger('USER_ROUTE');
 import {ValidationError} from 'sequelize';
@@ -18,29 +17,31 @@ router.post('/', async (req, res, next) => {
           return res.status(500).json({msg: 'An error occurred.'});
         }
 
-        user.personDetails = await PersonDetails.create(
-          (({ firstName, lastName, phone, address }) =>
-            ({
-              associatedAccountId: user.id,
+        const {
+          type: accountType,
+          firstName,
+          lastName,
+          phone,
+          address,
+          grade,
+          enrolmentYear,
+        } = req.body;
+
+        switch (accountType) {
+          case 'teacher':
+            user.teacherDetails = await Teacher.create({
+              accountId: user.id,
               firstName,
               lastName,
               phone,
-              address
-            })
-          )(req.body)
-        );
-
-        switch (req.body.type) {
-          case 'teacher':
-            user.teacherDetails = await Teacher.create({
-              accountId: user.id
+              address,
             });
             break;
           case 'student':
             const group = await Group.findOne({
               where: {
                 name: req.body.groupName,
-                grade: req.body.grade
+                grade: req.body.grade,
               }
             });
             
@@ -51,8 +52,12 @@ router.post('/', async (req, res, next) => {
             user.studentDetails = await Student.create({
               accountId: user.id,
               groupId: group.id,
-              grade: req.body.grade,
-              enrolmentYear: req.body.enrolmentYear
+              grade,
+              enrolmentYear,
+              firstName,
+              lastName,
+              phone,
+              address,
             });
             break;
           

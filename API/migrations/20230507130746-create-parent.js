@@ -12,6 +12,32 @@ module.exports = {
       accountId: {
         type: Sequelize.INTEGER,
       },
+      firstName: {
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+        type: Sequelize.STRING,
+      },
+      lastName: {
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+        type: Sequelize.STRING,
+      },
+      phone: {
+        validate: {
+          notEmpty: true,
+        },
+        type: Sequelize.STRING,
+      },
+      address: {
+        validate: {
+          notEmpty: true,
+        },
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -11,7 +11,6 @@ import indexRouter from './routes/index';
 import usersRouter from './routes/users';
 import tokensRouter from './routes/tokens';
 import { User } from '../models/user';
-import { PersonDetails } from '../models/personDetails';
 import { Subject } from '../models/subject';
 import { Teacher } from '../models/teacher';
 import { TeacherSubjectAssignment } from '../models/teacherSubjectAssignment';
@@ -56,7 +55,6 @@ class App {
       // },
       models: [
         User,
-        PersonDetails,
         Subject,
         Teacher,
         TeacherSubjectAssignment,

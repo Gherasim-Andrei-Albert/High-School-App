@@ -12,6 +12,36 @@ export class Parent extends Model {
   })
   accountId: number;
 
+  @Column({
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  })
+  firstName: string;
+
+  @Column({
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  })
+  lastName: string;
+
+  @Column({
+    validate: {
+      notEmpty: true,
+    },
+  })
+  phone: string;
+  
+  @Column({
+    validate: {
+      notEmpty: true,
+    },
+  })
+  address: string;
+
   @HasMany(() => Student)
   chlidren: Student[];
 

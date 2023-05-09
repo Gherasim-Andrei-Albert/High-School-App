@@ -10,15 +10,19 @@ module.exports = {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-    const teachersAccounts = sampleTeachersJSON.map(() => users.shift());
+    const admin = users.shift();
+    const teachers = sampleTeachersJSON.map(({ email, ...personDetails }) => ({
+      ...personDetails,
+      accountId: users.shift().id,
+    }));
     const parentsAccounts = sampleParentsJSON.map(() => users.shift());
     const studentsAccounts = sampleStudentsJSON.map(() => users.shift());
 
     const currentDate = new Date();
     await queryInterface.bulkInsert(
       'Teachers',
-      teachersAccounts.map((account) => ({
-        accountId: account.id,
+      teachers.map((teacher) => ({
+        ...teacher,
         createdAt: currentDate,
         updatedAt: currentDate,
       }))
