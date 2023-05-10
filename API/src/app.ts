@@ -19,7 +19,7 @@ import absencesRouter from './routes/absences';
 import { User } from '../models/user';
 import { Subject } from '../models/subject';
 import { Teacher } from '../models/teacher';
-import { TeacherSubjectAssignment } from '../models/teacherSubjectAssignment';
+import { TeacherSubjectAssignment } from '../models/teachersubjectassignment';
 import { Group } from '../models/group';
 import { Parent } from '../models/parent';
 import { Student } from '../models/student';
