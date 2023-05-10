@@ -28,8 +28,16 @@ router.get('/', async function (req, res, next) {
       include:[Student, Teacher]
     });
     if (user?.studentDetails) {
-      const marks = await user?.studentDetails.$get('marks');
-      return res.json({ marks });
+      let marks = await user?.studentDetails.$get('marks');
+      let marksResponse = await Promise.all(
+        marks.map(async mark => {
+          const lesson = await mark.$get('lesson');
+          const subject = await lesson?.$get('subject');
+          const teacher = await lesson?.$get('teacher');
+          return {markDetails: mark, lesson, subject, teacher};
+        })
+      );
+      return res.json({ marks: marksResponse });
     }
     if (user?.teacherDetails) {
       const lessons = await user?.teacherDetails.$get('lessons');

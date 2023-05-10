@@ -29,8 +29,16 @@ router.get('/', async function (req, res, next) {
       include:[Student, Teacher]
     });
     if (user?.studentDetails) {
-      const absences = await user?.studentDetails.$get('absences');
-      return res.json({ absences });
+      let absences = await user?.studentDetails.$get('absences');
+      let absencesResponse = await Promise.all(
+        absences.map(async absence => {
+          const lesson = await absence.$get('lesson');
+          const subject = await lesson?.$get('subject');
+          const teacher = await lesson?.$get('teacher');
+          return { absenceDetails: absence, lesson, subject, teacher };
+        })
+      );
+      return res.json({ absences: absencesResponse });
     }
     if (user?.teacherDetails) {
       const lessons = await user?.teacherDetails.$get('lessons');

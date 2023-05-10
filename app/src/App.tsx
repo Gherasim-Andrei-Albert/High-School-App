@@ -1,25 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { createRoot } from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+} from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
+import { Formik } from 'formik';
 import './App.css';
+import SignUpScreen from './screens/SignUpScreen';
+import LogInScreen from './screens/LogInScreen';
+import StudentScreen from './screens/StudentScreen';
+import MainScreen from './screens/MainScreen';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainScreen />,
+  },
+  {
+    path: '/signup',
+    element: <SignUpScreen />,
+  },
+  {
+    path: '/login',
+    element: <LogInScreen />,
+  },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 

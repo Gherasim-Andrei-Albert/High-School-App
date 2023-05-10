@@ -7,6 +7,7 @@ import { Sequelize } from 'sequelize-typescript';
 import dotenv from 'dotenv';
 dotenv.config({ path: path.join(__dirname, '..', 'config.env') });
 import passport from './middlewares/auth';
+import cors from 'cors';
 
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
@@ -39,6 +40,7 @@ class App {
   private config() {
 
     this.app.use(logger('dev'));
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cookieParser());

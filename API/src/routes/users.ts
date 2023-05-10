@@ -8,6 +8,28 @@ import {ValidationError} from 'sequelize';
 import { Teacher } from '../../models/teacher';
 import { Student } from '../../models/student';
 import { Group } from '../../models/group';
+declare module "express-serve-static-core" {
+  interface Request {
+    user: {_id: string};
+  }
+}
+
+router.get('/', passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => { 
+    try {
+      const user = await User.findOne({
+        where: {
+          id: req.user._id
+        },
+        include:[Student, Teacher]
+      });
+      if (!user) return res.status(500);
+      return res.json({ user});
+    } catch (err) {
+      return next(err)
+    }
+  }
+);
 
 router.post('/', async (req, res, next) => {
   passport.authenticate('signup', { session: false },
