@@ -1,9 +1,9 @@
 import express from 'express';
-import { getLogger } from '@/utils/loggers';
+// import { getLogger } from '@/utils/loggers';
 import passport from '../middlewares/auth';
 import { User } from '../../models/user';
 const router = express.Router();
-const logger = getLogger('USER_ROUTE');
+// const logger = getLogger('USER_ROUTE');
 import {ValidationError} from 'sequelize';
 import { Teacher } from '../../models/teacher';
 import { Student } from '../../models/student';

@@ -1,12 +1,12 @@
 import express from 'express';
-import { getLogger } from '@/utils/loggers';
+// import { getLogger } from '@/utils/loggers';
 import { Student } from '../../models/student';
 import { Teacher } from '../../models/teacher';
 import { User } from '../../models/user';
 import { Lesson } from '../../models/lesson';
 import { Group } from '../../models/group';
 const router = express.Router();
-const logger = getLogger('INDEX_ROUTE');
+// const logger = getLogger('INDEX_ROUTE');
 declare module "express-serve-static-core" {
   interface Request {
     user: {_id: string};

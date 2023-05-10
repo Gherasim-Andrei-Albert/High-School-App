@@ -1,10 +1,10 @@
 import express from 'express';
-import { getLogger } from '@/utils/loggers';
+// import { getLogger } from '@/utils/loggers';
 import passport from '../middlewares/auth';
 import jwt from 'jsonwebtoken';
 import { User } from '../../models/user';
 const router = express.Router();
-const logger = getLogger('USER_ROUTE');
+// const logger = getLogger('USER_ROUTE');
 
 router.post('/', async (req, res, next) => {
   passport.authenticate('login', async (err: any, user: User, info: any) => {

@@ -1,9 +1,9 @@
 import express from 'express';
 // import passport from '../middlewares/auth';
-import { getLogger } from '@/utils/loggers';
+// import { getLogger } from '@/utils/loggers';
 // import { User } from 'models/user';
 const router = express.Router();
-const logger = getLogger('INDEX_ROUTE');
+// const logger = getLogger('INDEX_ROUTE');
 import { User } from '../../models/user';
 import { Express } from "express-serve-static-core";
 import { use } from 'passport';
