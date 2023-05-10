@@ -1,7 +1,7 @@
 import { Table, Model, HasMany, BelongsToMany, HasOne, BelongsTo, Column, ForeignKey } from 'sequelize-typescript';
 import { Lesson } from './lesson';
 import { Subject } from './subject';
-import { TeacherSubjectAssignment } from './teacherSubjectAssignment';
+import { TeacherSubjectAssignment } from './teachersubjectassignment';
 import { Group } from './group';
 import { User } from './user';
 
