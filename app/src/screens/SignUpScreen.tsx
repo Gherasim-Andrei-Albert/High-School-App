@@ -12,6 +12,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import axios from 'axios';
+import axiosClient from '../services/axiosClient';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +49,7 @@ function SignUpScreen() {
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(false);
               const result =
-                await axios.post(`https://highschool-app-api.onrender.com/users`, values);
+                await axiosClient.post('/users', values);
               if (result.status === 200) {
                 navigate('/login');
               }

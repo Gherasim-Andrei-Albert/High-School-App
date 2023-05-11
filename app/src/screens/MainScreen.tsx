@@ -34,9 +34,9 @@ function MainScreen() {
       }
 
       const response =
-        await axiosClient('https://highschool-app-api.onrender.com/users');
+        await axiosClient('/users');
 
-      console.log(response.status);
+      // console.log(response.status);
 
       if (response.status === 200) {
         setUser(response.data.user);
