@@ -18,10 +18,13 @@ import StudentScreen from './StudentScreen';
 import { useNavigate } from 'react-router-dom';
 import TeacherScreen from './TeacherScreen';
 import Navbar from '../components/Navbar';
+import Alert from 'react-bootstrap/Alert';
+import Modal from 'react-bootstrap/Modal';
 
 
 function MainScreen() {
   const [validated, setValidated] = useState(false);
+  const [userFetchError, setUserFetchError] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] =
     useState<{
@@ -36,19 +39,34 @@ function MainScreen() {
         return;
       }
 
-      const response =
-        await axiosClient('/users');
+      try {
+        const response =
+          await axiosClient('/users');
 
-      // console.log(response.status);
-
-      if (response.status === 200) {
-        setUser(response.data.user);
+        if (response.status === 200) {
+          setUser(response.data.user);
+        }
+        else {
+          setUserFetchError(true);
+        }
+      } catch (err) {
+        setUserFetchError(true);
       }
     })();
   }, []);
 
   return (
     <>
+      <Modal show={userFetchError} onHide={() => { }}>
+        <Modal.Body>
+          <Alert variant="danger" onClose={() => { }} dismissible={false}>
+            <Alert.Heading>Server or internet error!</Alert.Heading>
+            <p>
+              Check your internet connection and refresh the page.
+            </p>
+          </Alert>
+        </Modal.Body>
+      </Modal>
       {
         (user !== null) && (
           <>

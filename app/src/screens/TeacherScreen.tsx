@@ -17,11 +17,18 @@ import axios from 'axios';
 import axiosClient from '../services/axiosClient';
 import { useNavigate } from 'react-router-dom';
 import { DateTime, Info } from "luxon";
+import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 
 function TeacherScreen(props: {
   user: { teacherDetails: { id: number } | null }
 }) {
   const [validated, setValidated] = useState(false);
+  const [groupsFetchError, setGroupsFetchError] = useState(false);
+  const [absenceAddedSuccess, setAbsenceAddedSuccess] = useState(false);
+  const [absenceAddedError, setAbsenceAddedError] = useState(false);
+  const [markAddedSuccess, setMarkAddedSuccess] = useState(false);
+  const [markAddedError, setMarkAddedError] = useState(false);
   const [groups, setGroups] = useState<{
     id: number,
     grade: number,
@@ -46,12 +53,19 @@ function TeacherScreen(props: {
       if (!localStorage.getItem('token')?.length) {
         navigate('/login');
       }
-      const groupsResponse =
-        await axiosClient.get('/groups');
-      if (groupsResponse.status === 200) {
-        const { groups } = groupsResponse.data;
-        console.log({ groups });
-        setGroups(groups);
+      try {
+        const groupsResponse = await axiosClient.get('/groups');
+        if (groupsResponse.status === 200) {
+          const { groups } = groupsResponse.data;
+          console.log({ groups });
+          setGroups(groups);
+        }
+        else {
+          setGroupsFetchError(true)
+        }
+      }
+      catch (err) {
+        setGroupsFetchError(true)
       }
     })();
   }, []);
@@ -59,193 +73,255 @@ function TeacherScreen(props: {
   let submitAction: string | undefined = undefined;
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Formik
-            // enableReinitialize={true}
-            initialValues={{
-              groupId: undefined,
-              studentId: undefined,
-              lessonId: undefined,
-              value: undefined,
-            }}
-            validate={values => {
-              const errors = {};
-              // if (!values.email) {
-              //   errors.email = 'Required';
-              // } else if (
-              //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              // ) {
-              //   errors.email = 'Invalid email address';
-              // }
-              return errors;
-            }}
-            onSubmit={async (values, { setSubmitting }) => {
-              setSubmitting(false);
-              switch (submitAction) {
-                case 'addAbsence': {
-                  const result =
-                    await axiosClient.post('/absences', values);
-                  console.log(result)
-                  break;
-                }
-                case 'addMark': {
-                  const result =
-                    await axiosClient.post('/marks', values);
-                  console.log(result)
-                  break;
-                }
-              }
-              submitAction = undefined;
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group as={Col} md="4" controlId="groupId">
-                  <Form.Label>Group</Form.Label>
-                  <Form.Select name="groupId" aria-label="Group name"
-                    onChange={handleChange}
-                    value={values.groupId}
-                  >
-                    {
-                      (values.groupId === undefined) && (
-                        <option>Select a group</option>
-                      )
+    <>
+      <Modal show={groupsFetchError} onHide={() => { }}>
+        <Modal.Body>
+          <Alert variant="danger" onClose={() => { }} dismissible={false}>
+            <Alert.Heading>Error! Coudn't download data for forms.</Alert.Heading>
+            <p>
+              Server or internet error.
+              Check your internet connection and refresh the page.
+            </p>
+          </Alert>
+        </Modal.Body>
+      </Modal>
+      <Modal show={absenceAddedError} onHide={() => setAbsenceAddedError(false)}>
+        <Modal.Body>
+          <Alert variant="danger" onClose={() => setAbsenceAddedError(false)} dismissible>
+            <Alert.Heading>Error! Absence coudn't be added.</Alert.Heading>
+          </Alert>
+        </Modal.Body>
+      </Modal>
+      <Modal show={absenceAddedSuccess} onHide={() => setAbsenceAddedSuccess(false)}>
+        <Modal.Body>
+          <Alert variant="success" onClose={() => setAbsenceAddedSuccess(false)} dismissible>
+            <Alert.Heading>Absence added successfuly.</Alert.Heading>
+          </Alert>
+        </Modal.Body>
+      </Modal>
+      <Modal show={markAddedError} onHide={() => setMarkAddedError(false)}>
+        <Modal.Body>
+          <Alert variant="danger" onClose={() => setMarkAddedError(false)} dismissible>
+            <Alert.Heading>Error! Mark coudn't be added.</Alert.Heading>
+          </Alert>
+        </Modal.Body>
+      </Modal>
+      <Modal show={markAddedSuccess} onHide={() => setMarkAddedSuccess(false)}>
+        <Modal.Body>
+          <Alert variant="success" onClose={() => setMarkAddedSuccess(false)} dismissible>
+            <Alert.Heading>Mark added successfuly.</Alert.Heading>
+          </Alert>
+        </Modal.Body>
+      </Modal>
+      <Container>
+        <Row>
+          <Col>
+            <Formik
+              // enableReinitialize={true}
+              initialValues={{
+                groupId: undefined,
+                studentId: undefined,
+                lessonId: undefined,
+                value: undefined,
+              }}
+              validate={values => {
+                const errors = {};
+                // if (!values.email) {
+                //   errors.email = 'Required';
+                // } else if (
+                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                // ) {
+                //   errors.email = 'Invalid email address';
+                // }
+                return errors;
+              }}
+              onSubmit={async (values, { setSubmitting }) => {
+                setSubmitting(false);
+                switch (submitAction) {
+                  case 'addAbsence': {
+                    try {
+                      const result =
+                        await axiosClient.post('/absences', values);
+
+                      if (result.status === 200) {
+                        setAbsenceAddedSuccess(true);
+                      }
+                      else {
+                        setAbsenceAddedError(true);
+                      }
                     }
-                    {
-                      groups.map(group => (
-                        <option value={group.id}>
-                          {`${group.grade}${group.name}`}
-                        </option>
-                      ))
+                    catch (err) {
+                      setAbsenceAddedError(true);
                     }
-                  </Form.Select>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="4" controlId="studentId">
-                  <Form.Label>Student</Form.Label>
-                  <Form.Select name="studentId" aria-label="student"
-                    onChange={handleChange}
-                    value={values.studentId}
-                    disabled={values.groupId === undefined}
-                  >
-                    {
-                      (values.studentId === undefined) && (
-                        <option>Select a student</option>
-                      )
-                    }
-                    {groups.find(group => group.id == values.groupId)?.students
-                      .map(student =>
-                        <option value={student.id}>
-                          {`${student.lastName} ${student.firstName}`}
-                        </option>
-                      )
-                    }
-                  </Form.Select>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="4" controlId="lessonId">
-                  <Form.Label>Lesson time</Form.Label>
-                  <Form.Select name="lessonId" aria-label="Lesson time"
-                    onChange={handleChange}
-                    value={values.lessonId}
-                    disabled={values.groupId === undefined}
-                  >
-                    {
-                      (values.lessonId === undefined) && (
-                        <option>Select a time</option>
-                      )
-                    }
-                    {
-                      groups.find(
-                        group => group.id == values.groupId
-                      )?.lessons?.filter(lesson =>
-                        lesson.teacherId === props.user.teacherDetails?.id
-                      )?.map(({ id, weekday, startTime }) => {
-                        const weekdayName =
-                          Info.weekdays('long', { locale: 'ro' })[weekday - 1];
-                        const formatedDate =
-                          DateTime.fromFormat(startTime, 'HH:mm:ss', { zone: 'utc' })
-                            .setZone('Europe/Bucharest')
-                            .toFormat('HH:mm', { locale: 'ro' });
-                        return <option value={id}>
-                          {`${weekdayName} ${formatedDate}`}
-                        </option>;
-                      })
-                    }
-                  </Form.Select>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    submitAction = "addAbsence";
-                    handleSubmit();
-                  }}
-                  disabled={
-                    Object.entries(values)
-                      .filter(([key, value]) => key !== 'value')
-                      .find(
-                        ([key, value]) => value === undefined
-                      ) !== undefined
+                    break;
                   }
-                >
-                  Add absence
-                </Button>
-                <Form.Group as={Col} md="4" controlId="value">
-                  <Form.Label>Mark</Form.Label>
-                  <Form.Select name="value" aria-label="Mark"
-                    onChange={handleChange}
-                    value={values.value}
-                    disabled={values.groupId === undefined}
-                  >
-                    {
-                      (values.value === undefined) && (
-                        <option>Select a mark value</option>
-                      )
+                  case 'addMark': {
+                    try {
+                      const result =
+                        await axiosClient.post('/marks', values);
+                      if (result.status === 200) {
+                        setMarkAddedSuccess(true);
+                      }
+                      else {
+                        setMarkAddedError(true);
+                      }
                     }
-                    {
-                      Array.from(Array(10).keys()).map(markIndex => (
-                        <option value={markIndex + 1}>{markIndex + 1}</option>
-                      ))
+                    catch (err) {
+                      setMarkAddedError(true);
                     }
-                  </Form.Select>
-                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                </Form.Group>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    submitAction = "addMark";
-                    handleSubmit();
-                  }}
-                  disabled={
-                    Object.values(values).findIndex(
-                      value => value === undefined
-                    ) !== -1
+                    break;
                   }
-                >
-                  Add mark
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-        </Col>
-      </Row>
-    </Container>
+                }
+                submitAction = undefined;
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <Form.Group as={Col} md="4" controlId="groupId">
+                    <Form.Label>Group</Form.Label>
+                    <Form.Select name="groupId" aria-label="Group name"
+                      onChange={handleChange}
+                      value={values.groupId}
+                    >
+                      {
+                        (values.groupId === undefined) && (
+                          <option>Select a group</option>
+                        )
+                      }
+                      {
+                        groups.map(group => (
+                          <option value={group.id}>
+                            {`${group.grade}${group.name}`}
+                          </option>
+                        ))
+                      }
+                    </Form.Select>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="studentId">
+                    <Form.Label>Student</Form.Label>
+                    <Form.Select name="studentId" aria-label="student"
+                      onChange={handleChange}
+                      value={values.studentId}
+                      disabled={values.groupId === undefined}
+                    >
+                      {
+                        (values.studentId === undefined) && (
+                          <option>Select a student</option>
+                        )
+                      }
+                      {groups.find(group => group.id == values.groupId)?.students
+                        .map(student =>
+                          <option value={student.id}>
+                            {`${student.lastName} ${student.firstName}`}
+                          </option>
+                        )
+                      }
+                    </Form.Select>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} md="4" controlId="lessonId">
+                    <Form.Label>Lesson time</Form.Label>
+                    <Form.Select name="lessonId" aria-label="Lesson time"
+                      onChange={handleChange}
+                      value={values.lessonId}
+                      disabled={values.groupId === undefined}
+                    >
+                      {
+                        (values.lessonId === undefined) && (
+                          <option>Select a time</option>
+                        )
+                      }
+                      {
+                        groups.find(
+                          group => group.id == values.groupId
+                        )?.lessons?.filter(lesson =>
+                          lesson.teacherId === props.user.teacherDetails?.id
+                        )?.map(({ id, weekday, startTime }) => {
+                          const weekdayName =
+                            Info.weekdays('long', { locale: 'ro' })[weekday - 1];
+                          const formatedDate =
+                            DateTime.fromFormat(startTime, 'HH:mm:ss', { zone: 'utc' })
+                              .setZone('Europe/Bucharest')
+                              .toFormat('HH:mm', { locale: 'ro' });
+                          return <option value={id}>
+                            {`${weekdayName} ${formatedDate}`}
+                          </option>;
+                        })
+                      }
+                    </Form.Select>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      submitAction = "addAbsence";
+                      handleSubmit();
+                    }}
+                    disabled={
+                      Object.entries(values)
+                        .filter(([key, value]) => key !== 'value')
+                        .find(
+                          ([key, value]) => value === undefined
+                        ) !== undefined
+                    }
+                  >
+                    Add absence
+                  </Button>
+                  <Form.Group as={Col} md="4" controlId="value">
+                    <Form.Label>Mark</Form.Label>
+                    <Form.Select name="value" aria-label="Mark"
+                      onChange={handleChange}
+                      value={values.value}
+                      disabled={values.groupId === undefined}
+                    >
+                      {
+                        (values.value === undefined) && (
+                          <option>Select a mark value</option>
+                        )
+                      }
+                      {
+                        Array.from(Array(10).keys()).map(markIndex => (
+                          <option value={markIndex + 1}>{markIndex + 1}</option>
+                        ))
+                      }
+                    </Form.Select>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      submitAction = "addMark";
+                      handleSubmit();
+                    }}
+                    disabled={
+                      Object.values(values).findIndex(
+                        value => value === undefined
+                      ) !== -1
+                    }
+                  >
+                    Add mark
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 
