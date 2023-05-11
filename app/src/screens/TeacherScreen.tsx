@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { DateTime, Info } from "luxon";
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 function TeacherScreen(props: {
   user: { teacherDetails: { id: number } | null }
@@ -187,6 +188,11 @@ function TeacherScreen(props: {
               }) => (
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Form.Group as={Col} md="4" controlId="groupId">
+                    {!groups.length &&
+                      <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </Spinner>
+                    }
                     <Form.Label>Group</Form.Label>
                     <Form.Select name="groupId" aria-label="Group name"
                       onChange={handleChange}
