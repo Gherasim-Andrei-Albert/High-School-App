@@ -34,7 +34,7 @@ function MainScreen() {
       }
 
       const response =
-        await axiosClient('http://localhost:3000/users');
+        await axiosClient('https://highschool-app-api.onrender.com/users');
 
       console.log(response.status);
 

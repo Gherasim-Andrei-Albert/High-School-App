@@ -51,7 +51,7 @@ function LogInScreen() {
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(false);
               const result =
-                await axios.post(`https://highschool-app.onrender.com/tokens`, values);
+                await axios.post(`https://highschool-app-api.onrender.com/tokens`, values);
               if (result.status === 200) {
                 localStorage.setItem('token', result.data.token);
                 navigate('/');

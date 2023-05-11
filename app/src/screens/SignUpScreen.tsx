@@ -48,7 +48,7 @@ function SignUpScreen() {
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(false);
               const result =
-                await axios.post(`https://highschool-app.onrender.com/users`, values);
+                await axios.post(`https://highschool-app-api.onrender.com/users`, values);
               if (result.status === 200) {
                 navigate('/login');
               }

@@ -40,9 +40,9 @@ function StudentScreen() {
       }
 
       const marksResponse =
-        await axiosClient('https://highschool-app.onrender.com/marks');
+        await axiosClient('https://highschool-app-api.onrender.com/marks');
       const absencesResponse =
-        await axiosClient('https://highschool-app.onrender.com/absences');
+        await axiosClient('https://highschool-app-api.onrender.com/absences');
       if (marksResponse.status === 200
         && absencesResponse.status === 200) {
         const { marks } = marksResponse.data;
