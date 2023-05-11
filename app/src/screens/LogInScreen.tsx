@@ -13,6 +13,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import { Formik } from 'formik';
 import axios from 'axios';
+import axiosClient from '../services/axiosClient';
 import { useNavigate } from 'react-router-dom';
 
 function LogInScreen() {
@@ -51,7 +52,7 @@ function LogInScreen() {
             onSubmit={async (values, { setSubmitting }) => {
               setSubmitting(false);
               const result =
-                await axios.post(`https://highschool-app-api.onrender.com/tokens`, values);
+                await axiosClient.post('/tokens', values);
               if (result.status === 200) {
                 localStorage.setItem('token', result.data.token);
                 navigate('/');
