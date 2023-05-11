@@ -131,3 +131,5 @@ dist
 
 /API/config/*
 config.env
+
+build
