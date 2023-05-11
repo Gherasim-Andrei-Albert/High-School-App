@@ -55,7 +55,7 @@ router.get('/', async function (req, res, next) {
 
 router.post('/', async function (req, res, next) {
   try {
-    const { subjectId, student: studentData, weekday, startTime, value } = req.body;
+    const { studentId, lessonId } = req.body;
     const user = await User.findOne({
       where: {
         id: req.user._id
@@ -65,25 +65,7 @@ router.post('/', async function (req, res, next) {
     if (!user?.teacherDetails) {
       return res.status(403).json({msg:'User is not a teacher.'})
     }
-    const student = await Student.findOne({
-      where: {
-        firstName: studentData.firstName,
-        lastName: studentData.lastName,
-      }
-    });
-    const lesson = await Lesson.findOne({
-      where: {
-        teacherId: user?.teacherDetails.id,
-        subjectId,
-        groupId: student?.groupId,
-        weekday,
-        startTime
-      }
-    });
-    await Absence.create({
-      studentId: student?.id,
-      lessonId: lesson?.id
-    });
+    await Absence.create({studentId, lessonId});
     return res.json({ msg: 'Absence added successfuly' });
   } catch (err) {
     return next(err)

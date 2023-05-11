@@ -24,7 +24,10 @@ function MainScreen() {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] =
-    useState<{ studentDetails: ({} | null) } | null>(null);
+    useState<{
+      studentDetails: ({} | null),
+      teacherDetails: ({ id: number } | null)
+    } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +53,11 @@ function MainScreen() {
         (user !== null) && (
           <>
             <Navbar />
-            {user.studentDetails ? <StudentScreen /> : <TeacherScreen />}
+            {
+              user.teacherDetails ?
+                <TeacherScreen user={user} />
+                : <StudentScreen />
+            }
           </>
         )
       }
