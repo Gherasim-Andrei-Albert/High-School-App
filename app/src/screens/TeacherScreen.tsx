@@ -228,7 +228,7 @@ function TeacherScreen(props: {
                     <Form.Select name="studentId" aria-label="student"
                       onChange={handleChange}
                       value={values.studentId}
-                      disabled={values.groupId === undefined}
+                      disabled={values.groupId === -1}
                     >
                       {
                         (values.studentId === -1) && (
@@ -250,7 +250,7 @@ function TeacherScreen(props: {
                     <Form.Select name="lessonId" aria-label="Lesson time"
                       onChange={handleChange}
                       value={values.lessonId}
-                      disabled={values.groupId === undefined}
+                      disabled={values.groupId === -1}
                     >
                       {
                         (values.lessonId === -1) && (
@@ -298,7 +298,7 @@ function TeacherScreen(props: {
                     <Form.Select name="value" aria-label="Mark"
                       onChange={handleChange}
                       value={values.value}
-                      disabled={values.groupId === undefined}
+                      disabled={values.groupId === -1}
                     >
                       {
                         (values.value === -1) && (
