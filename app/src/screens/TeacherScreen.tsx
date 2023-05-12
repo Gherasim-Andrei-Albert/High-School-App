@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
-import { Formik } from 'formik';
+import { Formik, useFormikContext } from 'formik';
 import axios from 'axios';
 import axiosClient from '../services/axiosClient';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,16 @@ import { DateTime, Info } from "luxon";
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+
+function OnGroupChangeFieldsReseter() {
+  const { values, setFieldValue } = useFormikContext<{ groupId: number }>();
+  useEffect(() => {
+    setFieldValue('studentId', -1);
+    setFieldValue('value', -1);
+    setFieldValue('lessonId', -1);
+  }, [values.groupId]);
+  return <></>;
+}
 
 function TeacherScreen(props: {
   user: { teacherDetails: { id: number } | null }
@@ -58,7 +68,6 @@ function TeacherScreen(props: {
         const groupsResponse = await axiosClient.get('/groups');
         if (groupsResponse.status === 200) {
           const { groups } = groupsResponse.data;
-          console.log({ groups });
           setGroups(groups);
         }
         else {
@@ -120,10 +129,10 @@ function TeacherScreen(props: {
             <Formik
               // enableReinitialize={true}
               initialValues={{
-                groupId: undefined,
-                studentId: undefined,
-                lessonId: undefined,
-                value: undefined,
+                groupId: -1,
+                studentId: -1,
+                lessonId: -1,
+                value: -1,
               }}
               validate={values => {
                 const errors = {};
@@ -187,6 +196,7 @@ function TeacherScreen(props: {
                 /* and other goodies */
               }) => (
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <OnGroupChangeFieldsReseter />
                   <Form.Group as={Col} md="4" controlId="groupId">
                     {!groups.length &&
                       <Spinner animation="border" role="status">
@@ -199,7 +209,7 @@ function TeacherScreen(props: {
                       value={values.groupId}
                     >
                       {
-                        (values.groupId === undefined) && (
+                        (values.groupId === -1) && (
                           <option>Select a group</option>
                         )
                       }
@@ -221,8 +231,8 @@ function TeacherScreen(props: {
                       disabled={values.groupId === undefined}
                     >
                       {
-                        (values.studentId === undefined) && (
-                          <option>Select a student</option>
+                        (values.studentId === -1) && (
+                          <option value={-1}>Select a student</option>
                         )
                       }
                       {groups.find(group => group.id == values.groupId)?.students
@@ -243,7 +253,7 @@ function TeacherScreen(props: {
                       disabled={values.groupId === undefined}
                     >
                       {
-                        (values.lessonId === undefined) && (
+                        (values.lessonId === -1) && (
                           <option>Select a time</option>
                         )
                       }
@@ -276,9 +286,9 @@ function TeacherScreen(props: {
                     disabled={
                       Object.entries(values)
                         .filter(([key, value]) => key !== 'value')
-                        .find(
-                          ([key, value]) => value === undefined
-                        ) !== undefined
+                        .findIndex(
+                          ([key, value]) => value === -1
+                        ) !== -1
                     }
                   >
                     Add absence
@@ -291,7 +301,7 @@ function TeacherScreen(props: {
                       disabled={values.groupId === undefined}
                     >
                       {
-                        (values.value === undefined) && (
+                        (values.value === -1) && (
                           <option>Select a mark value</option>
                         )
                       }
@@ -311,7 +321,7 @@ function TeacherScreen(props: {
                     }}
                     disabled={
                       Object.values(values).findIndex(
-                        value => value === undefined
+                        value => value === -1
                       ) !== -1
                     }
                   >
