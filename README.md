@@ -2,52 +2,52 @@
 
 <h2> Contents </h2>
 
-<a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-high-school-">
+<a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-high-school-">
   High-School-App
 </a>
 <ul>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-contents-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-contents-">
       Contents
     </a>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-project-architecture-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-project-architecture-">
       Project architecture
     </a>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-technologies-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-technologies-">
       Technologies
     </a>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-database-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-database-">
       Database
     </a>
     <ul>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-database-erd-diagram-">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-database-erd-diagram-">
           Database ERD Diagram
         </a>
       </li>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-database-schema-">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-database-schema-">
           Database Schema
         </a>
       </li>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-sample-data-">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-sample-data-">
           Sample Data
         </a>
         <ul>
           <li>
-            <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-sample-data-">
+            <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-sample-data-">
               Sample Data Generation
             </a>
           </li>
           <li>
-            <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-database-population-seeders-">
+            <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-database-population-seeders-">
               Database Population Seeders
             </a>
           </li>
@@ -56,34 +56,34 @@
     </ul>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-api-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-api-">
       API
     </a>
     <ul>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#models">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#models">
           Models
         </a>
       </li>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#routes">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#routes">
           Routes
         </a>
       </li>
       <li>
-        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#midlewares">
+        <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#midlewares">
           Midlewares
         </a>
       </li>
     </ul>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-app-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-app-">
       App
     </a>
   </li>
   <li>
-    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App/edit/main/README.md#-deploy-">
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-deploy-">
       Deploy
     </a>
   </li>
