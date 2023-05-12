@@ -112,7 +112,7 @@ On the frontend react is used along side react-bootstrap, formik for forms manag
 
 <br/>
 
-<img src="https://github.com/Gherasim-Andrei-Albert/High-School-App/assets/17341493/2302b2e2-dc9f-4edd-a49a-8a39806b4456" width="100%" height="auto"/>
+<img src="https://github.com/Gherasim-Andrei-Albert/High-School-App/assets/17341493/2302b2e2-dc9f-4edd-a49a-8a39806b4456" width="100%" height="auto"/> <br/>
 
 <br/>
 
