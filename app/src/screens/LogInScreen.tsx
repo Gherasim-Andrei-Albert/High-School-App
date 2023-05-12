@@ -17,14 +17,31 @@ import axiosClient from '../services/axiosClient';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 
 function LogInScreen() {
   const [validated, setValidated] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   return (
     <>
+      <Modal className="opacity-50" show={loading} fullscreen animation={false} onHide={() => { }}>
+        <Modal.Body
+          className="d-flex align-items-center justify-content-center">
+          <Spinner
+            animation="border"
+            role="status"
+            variant='primary'
+            style={{
+              width: 100,
+              height: 100,
+            }}>
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Modal.Body>
+      </Modal>
       <Modal show={loginError} onHide={() => setLoginError(false)}>
         <Modal.Body>
           <Alert variant="danger" onClose={() => setLoginError(false)} dismissible>
@@ -54,6 +71,7 @@ function LogInScreen() {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   setSubmitting(false);
+                  setLoading(true);
                   const result =
                     await axiosClient.post('/tokens', values);
                   if (result.status === 200) {
@@ -62,10 +80,12 @@ function LogInScreen() {
                   }
                   else {
                     setLoginError(true);
+                    setLoading(false);
                   }
                 }
                 catch (err) {
                   setLoginError(true);
+                  setLoading(false);
                 }
               }}
             >
