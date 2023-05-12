@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -44,7 +44,13 @@ function SignUpScreen() {
       </Modal>
       <Modal show={signupError} onHide={() => setSignupError(false)}>
         <Modal.Body>
-          <Alert variant="danger" onClose={() => setSignupError(false)} dismissible>
+          <Alert
+            variant="danger"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setSignupError(false);
+            }}
+            dismissible>
             <Alert.Heading>Error! Coudn't register account.</Alert.Heading>
           </Alert>
         </Modal.Body>

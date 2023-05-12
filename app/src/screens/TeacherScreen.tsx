@@ -97,28 +97,52 @@ function TeacherScreen(props: {
       </Modal>
       <Modal show={absenceAddedError} onHide={() => setAbsenceAddedError(false)}>
         <Modal.Body>
-          <Alert variant="danger" onClose={() => setAbsenceAddedError(false)} dismissible>
+          <Alert
+            variant="danger"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setAbsenceAddedError(false);
+            }}
+            dismissible>
             <Alert.Heading>Error! Absence coudn't be added.</Alert.Heading>
           </Alert>
         </Modal.Body>
       </Modal>
       <Modal show={absenceAddedSuccess} onHide={() => setAbsenceAddedSuccess(false)}>
         <Modal.Body>
-          <Alert variant="success" onClose={() => setAbsenceAddedSuccess(false)} dismissible>
+          <Alert
+            variant="success"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setAbsenceAddedSuccess(false);
+            }}
+            dismissible>
             <Alert.Heading>Absence added successfuly.</Alert.Heading>
           </Alert>
         </Modal.Body>
       </Modal>
       <Modal show={markAddedError} onHide={() => setMarkAddedError(false)}>
         <Modal.Body>
-          <Alert variant="danger" onClose={() => setMarkAddedError(false)} dismissible>
+          <Alert
+            variant="danger"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setMarkAddedError(false)
+            }}
+            dismissible>
             <Alert.Heading>Error! Mark coudn't be added.</Alert.Heading>
           </Alert>
         </Modal.Body>
       </Modal>
       <Modal show={markAddedSuccess} onHide={() => setMarkAddedSuccess(false)}>
         <Modal.Body>
-          <Alert variant="success" onClose={() => setMarkAddedSuccess(false)} dismissible>
+          <Alert
+            variant="success"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setMarkAddedSuccess(false)
+            }}
+            dismissible>
             <Alert.Heading>Mark added successfuly.</Alert.Heading>
           </Alert>
         </Modal.Body>

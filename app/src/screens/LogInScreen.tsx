@@ -44,7 +44,13 @@ function LogInScreen() {
       </Modal>
       <Modal show={loginError} onHide={() => setLoginError(false)}>
         <Modal.Body>
-          <Alert variant="danger" onClose={() => setLoginError(false)} dismissible>
+          <Alert
+            variant="danger"
+            onClose={() => {
+              document.body.style.overflow = '';
+              setLoginError(false)
+            }}
+            dismissible>
             <Alert.Heading>Error! Coudn't login.</Alert.Heading>
           </Alert>
         </Modal.Body>
