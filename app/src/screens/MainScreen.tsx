@@ -58,8 +58,12 @@ function MainScreen() {
   return (
     <>
       <Modal show={userFetchError} onHide={() => { }}>
-        <Modal.Body>
-          <Alert variant="danger" onClose={() => { }} dismissible={false}>
+        <Modal.Body className="p-0">
+          <Alert
+            className="m-0"
+            variant="danger"
+            onClose={() => { }}
+            dismissible={false}>
             <Alert.Heading>Server or internet error!</Alert.Heading>
             <p>
               Check your internet connection and refresh the page.

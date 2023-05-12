@@ -66,8 +66,12 @@ function StudentScreen() {
   return (
     <>
       <Modal show={fetchError} onHide={() => { }}>
-        <Modal.Body>
-          <Alert variant="danger" onClose={() => { }} dismissible={false}>
+        <Modal.Body className="p-0">
+          <Alert
+            className="m-0"
+            variant="danger"
+            onClose={() => { }}
+            dismissible={false}>
             <Alert.Heading>Error! Coudn't load marks and absences.</Alert.Heading>
             <p>
               Server or internet error.

@@ -85,8 +85,12 @@ function TeacherScreen(props: {
   return (
     <>
       <Modal show={groupsFetchError} onHide={() => { }}>
-        <Modal.Body>
-          <Alert variant="danger" onClose={() => { }} dismissible={false}>
+        <Modal.Body className="p-0">
+          <Alert
+            className="m-0"
+            variant="danger"
+            onClose={() => { }}
+            dismissible={false}>
             <Alert.Heading>Error! Coudn't download data for forms.</Alert.Heading>
             <p>
               Server or internet error.
@@ -96,8 +100,9 @@ function TeacherScreen(props: {
         </Modal.Body>
       </Modal>
       <Modal show={absenceAddedError} onHide={() => setAbsenceAddedError(false)}>
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <Alert
+            className="m-0"
             variant="danger"
             onClose={() => {
               document.body.style.overflow = '';
@@ -109,8 +114,9 @@ function TeacherScreen(props: {
         </Modal.Body>
       </Modal>
       <Modal show={absenceAddedSuccess} onHide={() => setAbsenceAddedSuccess(false)}>
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <Alert
+            className="m-0"
             variant="success"
             onClose={() => {
               document.body.style.overflow = '';
@@ -122,8 +128,9 @@ function TeacherScreen(props: {
         </Modal.Body>
       </Modal>
       <Modal show={markAddedError} onHide={() => setMarkAddedError(false)}>
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <Alert
+            className="m-0"
             variant="danger"
             onClose={() => {
               document.body.style.overflow = '';
@@ -135,8 +142,9 @@ function TeacherScreen(props: {
         </Modal.Body>
       </Modal>
       <Modal show={markAddedSuccess} onHide={() => setMarkAddedSuccess(false)}>
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <Alert
+            className="m-0"
             variant="success"
             onClose={() => {
               document.body.style.overflow = '';

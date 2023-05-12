@@ -43,8 +43,9 @@ function SignUpScreen() {
         </Modal.Body>
       </Modal>
       <Modal show={signupError} onHide={() => setSignupError(false)}>
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <Alert
+            className="m-0"
             variant="danger"
             onClose={() => {
               document.body.style.overflow = '';
