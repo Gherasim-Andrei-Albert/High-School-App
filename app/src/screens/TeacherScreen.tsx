@@ -20,6 +20,7 @@ import { DateTime, Info } from "luxon";
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import Stack from 'react-bootstrap/Stack';
 
 function OnGroupChangeFieldsReseter() {
   const { values, setFieldValue } = useFormikContext<{ groupId: number }>();
@@ -156,218 +157,223 @@ function TeacherScreen(props: {
         </Modal.Body>
       </Modal>
       <Container>
-        <Row>
-          <Col>
-            <Formik
-              // enableReinitialize={true}
-              initialValues={{
-                groupId: -1,
-                studentId: -1,
-                lessonId: -1,
-                value: -1,
-              }}
-              validate={values => {
-                const errors = {};
-                // if (!values.email) {
-                //   errors.email = 'Required';
-                // } else if (
-                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                // ) {
-                //   errors.email = 'Invalid email address';
-                // }
-                return errors;
-              }}
-              onSubmit={async (values, { setSubmitting }) => {
-                setSubmitting(false);
-                switch (submitAction) {
-                  case 'addAbsence': {
-                    try {
-                      const result =
-                        await axiosClient.post('/absences', values);
+        <Formik
+          // enableReinitialize={true}
+          initialValues={{
+            groupId: -1,
+            studentId: -1,
+            lessonId: -1,
+            value: -1,
+          }}
+          validate={values => {
+            const errors = {};
+            // if (!values.email) {
+            //   errors.email = 'Required';
+            // } else if (
+            //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            // ) {
+            //   errors.email = 'Invalid email address';
+            // }
+            return errors;
+          }}
+          onSubmit={async (values, { setSubmitting }) => {
+            setSubmitting(false);
+            switch (submitAction) {
+              case 'addAbsence': {
+                try {
+                  const result =
+                    await axiosClient.post('/absences', values);
 
-                      if (result.status === 200) {
-                        setAbsenceAddedSuccess(true);
-                      }
-                      else {
-                        setAbsenceAddedError(true);
-                      }
-                    }
-                    catch (err) {
-                      setAbsenceAddedError(true);
-                    }
-                    break;
+                  if (result.status === 200) {
+                    setAbsenceAddedSuccess(true);
                   }
-                  case 'addMark': {
-                    try {
-                      const result =
-                        await axiosClient.post('/marks', values);
-                      if (result.status === 200) {
-                        setMarkAddedSuccess(true);
-                      }
-                      else {
-                        setMarkAddedError(true);
-                      }
-                    }
-                    catch (err) {
-                      setMarkAddedError(true);
-                    }
-                    break;
+                  else {
+                    setAbsenceAddedError(true);
                   }
                 }
-                submitAction = undefined;
+                catch (err) {
+                  setAbsenceAddedError(true);
+                }
+                break;
+              }
+              case 'addMark': {
+                try {
+                  const result =
+                    await axiosClient.post('/marks', values);
+                  if (result.status === 200) {
+                    setMarkAddedSuccess(true);
+                  }
+                  else {
+                    setMarkAddedError(true);
+                  }
+                }
+                catch (err) {
+                  setMarkAddedError(true);
+                }
+                break;
+              }
+            }
+            submitAction = undefined;
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <Form
+              noValidate
+              validated={validated}
+              onSubmit={handleSubmit}
+              className="my-3"
+              style={{
+                width: '100%',
+                maxWidth: 576
               }}
             >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                  <OnGroupChangeFieldsReseter />
-                  <Form.Group as={Col} md="4" controlId="groupId">
-                    {!groups.length &&
-                      <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                      </Spinner>
-                    }
-                    <Form.Label>Group</Form.Label>
-                    <Form.Select name="groupId" aria-label="Group name"
-                      onChange={handleChange}
-                      value={values.groupId}
-                    >
-                      {
-                        (values.groupId === -1) && (
-                          <option>Select a group</option>
-                        )
-                      }
-                      {
-                        groups.map(group => (
-                          <option value={group.id}>
-                            {`${group.grade}${group.name}`}
-                          </option>
-                        ))
-                      }
-                    </Form.Select>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="studentId">
-                    <Form.Label>Student</Form.Label>
-                    <Form.Select name="studentId" aria-label="student"
-                      onChange={handleChange}
-                      value={values.studentId}
-                      disabled={values.groupId === -1}
-                    >
-                      {
-                        (values.studentId === -1) && (
-                          <option value={-1}>Select a student</option>
-                        )
-                      }
-                      {groups.find(group => group.id == values.groupId)?.students
-                        .map(student =>
-                          <option value={student.id}>
-                            {`${student.lastName} ${student.firstName}`}
-                          </option>
-                        )
-                      }
-                    </Form.Select>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="lessonId">
-                    <Form.Label>Lesson time</Form.Label>
-                    <Form.Select name="lessonId" aria-label="Lesson time"
-                      onChange={handleChange}
-                      value={values.lessonId}
-                      disabled={values.groupId === -1}
-                    >
-                      {
-                        (values.lessonId === -1) && (
-                          <option>Select a time</option>
-                        )
-                      }
-                      {
-                        groups.find(
-                          group => group.id == values.groupId
-                        )?.lessons?.filter(lesson =>
-                          lesson.teacherId === props.user.teacherDetails?.id
-                        )?.map(({ id, weekday, startTime }) => {
-                          const weekdayName =
-                            Info.weekdays('long', { locale: 'ro' })[weekday - 1];
-                          const formatedDate =
-                            DateTime.fromFormat(startTime, 'HH:mm:ss', { zone: 'utc' })
-                              .setZone('Europe/Bucharest')
-                              .toFormat('HH:mm', { locale: 'ro' });
-                          return <option value={id}>
-                            {`${weekdayName} ${formatedDate}`}
-                          </option>;
-                        })
-                      }
-                    </Form.Select>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      submitAction = "addAbsence";
-                      handleSubmit();
-                    }}
-                    disabled={
-                      Object.entries(values)
-                        .filter(([key, value]) => key !== 'value')
-                        .findIndex(
-                          ([key, value]) => value === -1
-                        ) !== -1
-                    }
+              <Stack gap={3}>
+                <OnGroupChangeFieldsReseter />
+                <Form.Group controlId="groupId">
+                  {!groups.length &&
+                    <Spinner animation="border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  }
+                  <Form.Label>Group</Form.Label>
+                  <Form.Select name="groupId" aria-label="Group name"
+                    onChange={handleChange}
+                    value={values.groupId}
                   >
-                    Add absence
-                  </Button>
-                  <Form.Group as={Col} md="4" controlId="value">
-                    <Form.Label>Mark</Form.Label>
-                    <Form.Select name="value" aria-label="Mark"
-                      onChange={handleChange}
-                      value={values.value}
-                      disabled={values.groupId === -1}
-                    >
-                      {
-                        (values.value === -1) && (
-                          <option>Select a mark value</option>
-                        )
-                      }
-                      {
-                        Array.from(Array(10).keys()).map(markIndex => (
-                          <option value={markIndex + 1}>{markIndex + 1}</option>
-                        ))
-                      }
-                    </Form.Select>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      submitAction = "addMark";
-                      handleSubmit();
-                    }}
-                    disabled={
-                      Object.values(values).findIndex(
-                        value => value === -1
+                    {
+                      (values.groupId === -1) && (
+                        <option>Select a group</option>
+                      )
+                    }
+                    {
+                      groups.map(group => (
+                        <option value={group.id}>
+                          {`${group.grade}${group.name}`}
+                        </option>
+                      ))
+                    }
+                  </Form.Select>
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="studentId">
+                  <Form.Label>Student</Form.Label>
+                  <Form.Select name="studentId" aria-label="student"
+                    onChange={handleChange}
+                    value={values.studentId}
+                    disabled={values.groupId === -1}
+                  >
+                    {
+                      (values.studentId === -1) && (
+                        <option value={-1}>Select a student</option>
+                      )
+                    }
+                    {groups.find(group => group.id == values.groupId)?.students
+                      .map(student =>
+                        <option value={student.id}>
+                          {`${student.lastName} ${student.firstName}`}
+                        </option>
+                      )
+                    }
+                  </Form.Select>
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="lessonId">
+                  <Form.Label>Lesson time</Form.Label>
+                  <Form.Select name="lessonId" aria-label="Lesson time"
+                    onChange={handleChange}
+                    value={values.lessonId}
+                    disabled={values.groupId === -1}
+                  >
+                    {
+                      (values.lessonId === -1) && (
+                        <option>Select a time</option>
+                      )
+                    }
+                    {
+                      groups.find(
+                        group => group.id == values.groupId
+                      )?.lessons?.filter(lesson =>
+                        lesson.teacherId === props.user.teacherDetails?.id
+                      )?.map(({ id, weekday, startTime }) => {
+                        const weekdayName =
+                          Info.weekdays('long', { locale: 'ro' })[weekday - 1];
+                        const formatedDate =
+                          DateTime.fromFormat(startTime, 'HH:mm:ss', { zone: 'utc' })
+                            .setZone('Europe/Bucharest')
+                            .toFormat('HH:mm', { locale: 'ro' });
+                        return <option value={id}>
+                          {`${weekdayName} ${formatedDate}`}
+                        </option>;
+                      })
+                    }
+                  </Form.Select>
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Button
+                  type="button"
+                  className="align-self-start"
+                  onClick={() => {
+                    submitAction = "addAbsence";
+                    handleSubmit();
+                  }}
+                  disabled={
+                    Object.entries(values)
+                      .filter(([key, value]) => key !== 'value')
+                      .findIndex(
+                        ([key, value]) => value === -1
                       ) !== -1
-                    }
+                  }
+                >
+                  Add absence
+                </Button>
+                <Form.Group controlId="value">
+                  <Form.Label>Mark</Form.Label>
+                  <Form.Select name="value" aria-label="Mark"
+                    onChange={handleChange}
+                    value={values.value}
+                    disabled={values.groupId === -1}
                   >
-                    Add mark
-                  </Button>
-                </Form>
-              )}
-            </Formik>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-          </Col>
-        </Row>
+                    {
+                      (values.value === -1) && (
+                        <option>Select a mark value</option>
+                      )
+                    }
+                    {
+                      Array.from(Array(10).keys()).map(markIndex => (
+                        <option value={markIndex + 1}>{markIndex + 1}</option>
+                      ))
+                    }
+                  </Form.Select>
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Button
+                  type="button"
+                  className="align-self-start"
+                  onClick={() => {
+                    submitAction = "addMark";
+                    handleSubmit();
+                  }}
+                  disabled={
+                    Object.values(values).findIndex(
+                      value => value === -1
+                    ) !== -1
+                  }
+                >
+                  Add mark
+                </Button>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
       </Container>
     </>
   );
