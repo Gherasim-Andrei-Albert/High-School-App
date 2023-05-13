@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import Stack from 'react-bootstrap/Stack';
+import Card from 'react-bootstrap/Card';
 
 function LogInScreen() {
   const [validated, setValidated] = useState(false);
@@ -56,58 +58,66 @@ function LogInScreen() {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Container >
-        <Row>
-          <Col className="justify-content-md-center">
-            <Formik
-              initialValues={{
-                email: '',
-                password: '',
-              }}
-              validate={values => {
-                const errors = {};
-                // if (!values.email) {
-                //   errors.email = 'Required';
-                // } else if (
-                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                // ) {
-                //   errors.email = 'Invalid email address';
-                // }
-                return errors;
-              }}
-              onSubmit={async (values, { setSubmitting }) => {
-                try {
-                  setSubmitting(false);
-                  setLoading(true);
-                  const result =
-                    await axiosClient.post('/tokens', values);
-                  if (result.status === 200) {
-                    localStorage.setItem('token', result.data.token);
-                    navigate('/');
-                  }
-                  else {
-                    setLoginError(true);
-                    setLoading(false);
-                  }
-                }
-                catch (err) {
-                  setLoginError(true);
-                  setLoading(false);
-                }
-              }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                  <Form.Group as={Col} md="4" controlId="email">
+      <Container
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ height: '100%' }}>
+        <Card style={{
+          width: '100%',
+          maxWidth: 576
+        }}>
+          <Card.Body>
+            <Card.Text>
+              <Stack gap={3}>
+                <Formik
+                  initialValues={{
+                    email: '',
+                    password: '',
+                  }}
+                  validate={values => {
+                    const errors = {};
+                    // if (!values.email) {
+                    //   errors.email = 'Required';
+                    // } else if (
+                    //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    // ) {
+                    //   errors.email = 'Invalid email address';
+                    // }
+                    return errors;
+                  }}
+                  onSubmit={async (values, { setSubmitting }) => {
+                    try {
+                      setSubmitting(false);
+                      setLoading(true);
+                      const result =
+                        await axiosClient.post('/tokens', values);
+                      if (result.status === 200) {
+                        localStorage.setItem('token', result.data.token);
+                        navigate('/');
+                      }
+                      else {
+                        setLoginError(true);
+                        setLoading(false);
+                      }
+                    }
+                    catch (err) {
+                      setLoginError(true);
+                      setLoading(false);
+                    }
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                      <Stack gap={3}>
+                        <Form.Group controlId="email">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                       type="email"
@@ -116,7 +126,7 @@ function LogInScreen() {
                       value={values.email}
                     />
                   </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="password">
+                        <Form.Group controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                       type="password"
@@ -124,17 +134,21 @@ function LogInScreen() {
                       onChange={handleChange}
                       value={values.password} />
                   </Form.Group>
-                  <Button type="submit">Login</Button>
-                </Form>
-              )}
-            </Formik>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p>Don't have an account? <Link to="/signup">Register</Link></p>
-          </Col>
-        </Row>
+                        <Button type="submit"
+                          style={{ maxWidth: 576 }}>
+                          Login
+                        </Button>
+                      </Stack>
+                    </Form>
+                  )}
+                </Formik>
+                <p style={{ maxWidth: 576 }}>
+                  Don't have an account? <Link to="/signup">Register</Link>
+                </p>
+              </Stack>
+            </Card.Text>
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );
