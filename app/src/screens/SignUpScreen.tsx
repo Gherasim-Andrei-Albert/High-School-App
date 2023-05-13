@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
+import Stack from 'react-bootstrap/Stack';
+import Card from 'react-bootstrap/Card';
 
 function SignUpScreen() {
   const [validated, setValidated] = useState(false);
@@ -56,163 +58,171 @@ function SignUpScreen() {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Container>
-        <Row>
-          <Col>
-            <Formik
-              initialValues={{
-                email: '',
-                password: '',
-                firstName: '',
-                lastName: '',
-                type: 'teacher',
-                grade: 9,
-                groupName: 'A',
-                enrolmentYear: new Date().getFullYear()
-              }}
-              validate={values => {
-                const errors = {};
-                // if (!values.email) {
-                //   errors.email = 'Required';
-                // } else if (
-                //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                // ) {
-                //   errors.email = 'Invalid email address';
-                // }
-                return errors;
-              }}
-              onSubmit={async (values, { setSubmitting }) => {
-                try {
-                  setSubmitting(false);
-                  setLoading(true);
-                  const result =
-                    await axiosClient.post('/users', values);
-                  if (result.status === 200) {
-                    navigate('/login');
-                  }
-                  else {
-                    setLoading(false);
-                    setSignupError(true);
-                  }
-                }
-                catch (err) {
-                  setLoading(false);
-                  setSignupError(true);
-                }
-              }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                  <Form.Group as={Col} md="4" controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter email"
-                      onChange={handleChange}
-                      value={values.email}
-                    />
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      onChange={handleChange}
-                      value={values.password} />
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="firstName">
-                    <Form.Label>First name</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      placeholder="First name"
-                      onChange={handleChange}
-                      value={values.firstName}
-                    />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="lastName">
-                    <Form.Label>Last name</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      placeholder="Last name"
-                      onChange={handleChange}
-                      value={values.lastName}
-                    />
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="accountType">
-                    <Form.Label>Account type</Form.Label>
-                    <Form.Select name="type" aria-label="Account type"
-                      onChange={handleChange}
-                      value={values.type}
-                    >
-                      <option value="teacher">teacher</option>
-                      <option value="student">student</option>
-                    </Form.Select>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                  {
-                    values.type === 'student' && (
-                      <>
-                        <Form.Group as={Col} md="4" controlId="grade">
-                          <Form.Label>Grade</Form.Label>
-                          <Form.Select name="grade" aria-label="Grade"
+      <Container
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ minHeight: '100%' }}>
+        <Card className="my-3" style={{
+          width: '100%',
+          maxWidth: 576
+        }}>
+          <Card.Body>
+            <Card.Text>
+              <Stack gap={3}>
+                <Formik
+                  initialValues={{
+                    email: '',
+                    password: '',
+                    firstName: '',
+                    lastName: '',
+                    type: 'teacher',
+                    grade: 9,
+                    groupName: 'A',
+                    enrolmentYear: new Date().getFullYear()
+                  }}
+                  validate={values => {
+                    const errors = {};
+                    // if (!values.email) {
+                    //   errors.email = 'Required';
+                    // } else if (
+                    //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    // ) {
+                    //   errors.email = 'Invalid email address';
+                    // }
+                    return errors;
+                  }}
+                  onSubmit={async (values, { setSubmitting }) => {
+                    try {
+                      setSubmitting(false);
+                      setLoading(true);
+                      const result =
+                        await axiosClient.post('/users', values);
+                      if (result.status === 200) {
+                        navigate('/login');
+                      }
+                      else {
+                        setLoading(false);
+                        setSignupError(true);
+                      }
+                    }
+                    catch (err) {
+                      setLoading(false);
+                      setSignupError(true);
+                    }
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                      <Stack gap={3}>
+                        <Form.Group controlId="email">
+                          <Form.Label>Email address</Form.Label>
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter email"
                             onChange={handleChange}
-                            value={values.grade}
-                          >
-                            {Array.from(Array(4).keys()).map(gradeIndex =>
-                              <option value={9 + gradeIndex}>{9 + gradeIndex}</option>)
-                            }
-                          </Form.Select>
-                          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            value={values.email}
+                          />
                         </Form.Group>
-                        <Form.Group as={Col} md="4" controlId="groupName">
-                          <Form.Label>Group</Form.Label>
-                          <Form.Select name="groupName" aria-label="Group name"
+                        <Form.Group controlId="password">
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control
+                            type="password"
+                            placeholder="Password"
                             onChange={handleChange}
-                            value={values.groupName}
-                          >
-                            {Array.from(Array(4).keys()).map(gradeIndex =>
-                              <option value={['A', 'B', 'C', 'D'][gradeIndex]}>
-                                {['A', 'B', 'C', 'D'][gradeIndex]}
-                              </option>
-                            )}
-                          </Form.Select>
-                          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            value={values.password}
+                          />
                         </Form.Group>
-                        <Form.Group as={Col} md="4" controlId="enrolmentYear">
-                          <Form.Label>Enrolment year</Form.Label>
-                          <Form.Control type="number"
+                        <Form.Group controlId="firstName">
+                          <Form.Label>First name</Form.Label>
+                          <Form.Control
+                            required
+                            type="text"
+                            placeholder="First name"
                             onChange={handleChange}
-                            value={values.enrolmentYear}
+                            value={values.firstName}
                           />
                           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
-                      </>
-                    )
-                  }
-                  <Button type="submit">Register</Button>
-                </Form>
-              )}
-            </Formik>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p>Already have an account? <Link to="/login">Log in</Link></p>
-          </Col>
-        </Row>
+                        <Form.Group controlId="lastName">
+                          <Form.Label>Last name</Form.Label>
+                          <Form.Control
+                            required
+                            type="text"
+                            placeholder="Last name"
+                            onChange={handleChange}
+                            value={values.lastName}
+                          />
+                          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="accountType">
+                          <Form.Label>Account type</Form.Label>
+                          <Form.Select name="type" aria-label="Account type"
+                            onChange={handleChange}
+                            value={values.type}
+                          >
+                            <option value="teacher">teacher</option>
+                            <option value="student">student</option>
+                          </Form.Select>
+                          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        {
+                          values.type === 'student' && (
+                            <>
+                              <Form.Group controlId="grade">
+                                <Form.Label>Grade</Form.Label>
+                                <Form.Select name="grade" aria-label="Grade"
+                                  onChange={handleChange}
+                                  value={values.grade}
+                                >
+                                  {Array.from(Array(4).keys()).map(gradeIndex =>
+                                    <option value={9 + gradeIndex}>{9 + gradeIndex}</option>)
+                                  }
+                                </Form.Select>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                              </Form.Group>
+                              <Form.Group controlId="groupName">
+                                <Form.Label>Group</Form.Label>
+                                <Form.Select name="groupName" aria-label="Group name"
+                                  onChange={handleChange}
+                                  value={values.groupName}
+                                >
+                                  {Array.from(Array(4).keys()).map(gradeIndex =>
+                                    <option value={['A', 'B', 'C', 'D'][gradeIndex]}>
+                                      {['A', 'B', 'C', 'D'][gradeIndex]}
+                                    </option>
+                                  )}
+                                </Form.Select>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                              </Form.Group>
+                              <Form.Group controlId="enrolmentYear">
+                                <Form.Label>Enrolment year</Form.Label>
+                                <Form.Control type="number"
+                                  onChange={handleChange}
+                                  value={values.enrolmentYear}
+                                />
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                              </Form.Group>
+                            </>
+                          )
+                        }
+                        <Button type="submit">Register</Button>
+                      </Stack>
+                    </Form>
+                  )}
+                </Formik>
+                <p>Already have an account? <Link to="/login">Log in</Link></p>
+              </Stack>
+            </Card.Text>
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );
