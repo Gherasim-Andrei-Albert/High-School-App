@@ -21,6 +21,7 @@ import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
+import Navbar from '../components/Navbar';
 
 function OnGroupChangeFieldsReseter() {
   const { values, setFieldValue } = useFormikContext<{ groupId: number }>();
@@ -156,7 +157,7 @@ function TeacherScreen(props: {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Container>
+      <Container style={{ flex: 1 }}>
         <Formik
           // enableReinitialize={true}
           initialValues={{

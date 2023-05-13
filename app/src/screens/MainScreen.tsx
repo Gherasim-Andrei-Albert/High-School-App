@@ -73,14 +73,19 @@ function MainScreen() {
       </Modal>
       {
         (user !== null) && (
-          <>
+          <div
+            className='d-flex flex-column'
+            style={{
+              height: '100%'
+            }}
+          >
             <Navbar />
             {
               user.teacherDetails ?
                 <TeacherScreen user={user} />
                 : <StudentScreen />
             }
-          </>
+          </div >
         )
       }
     </>

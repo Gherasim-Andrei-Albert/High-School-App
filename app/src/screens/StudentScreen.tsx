@@ -18,6 +18,7 @@ import axiosClient from '../services/axiosClient';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
+import Navbar from '../components/Navbar';
 
 function StudentScreen() {
   const [validated, setValidated] = useState(false);
@@ -80,7 +81,7 @@ function StudentScreen() {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Container style={{ height: '90%' }}>
+      <Container style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
         <Row style={{ height: '100%' }}>
           <Col style={{ height: '100%' }} className="overflow-auto">
             {marks.map(mark =>
