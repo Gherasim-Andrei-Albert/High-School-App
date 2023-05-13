@@ -118,22 +118,23 @@ function LogInScreen() {
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                       <Stack gap={3}>
                         <Form.Group controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter email"
-                      onChange={handleChange}
-                      value={values.email}
-                    />
-                  </Form.Group>
+                          <Form.Label>Email address</Form.Label>
+                          <Form.Control
+                            type="email"
+                            placeholder="Enter email"
+                            onChange={handleChange}
+                            value={values.email}
+                          />
+                        </Form.Group>
                         <Form.Group controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Password"
-                      onChange={handleChange}
-                      value={values.password} />
-                  </Form.Group>
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control
+                            type="password"
+                            placeholder="Password"
+                            onChange={handleChange}
+                            value={values.password}
+                          />
+                        </Form.Group>
                         <Button type="submit"
                           style={{ maxWidth: 576 }}>
                           Login
