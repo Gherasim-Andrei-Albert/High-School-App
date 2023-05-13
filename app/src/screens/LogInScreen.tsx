@@ -60,8 +60,10 @@ function LogInScreen() {
       </Modal>
       <Container
         className="d-flex flex-column justify-content-center align-items-center"
-        style={{ height: '100%' }}>
-        <Card style={{
+        style={{ minHeight: '100%' }}>
+        <Card
+          className="my-3"
+          style={{
           width: '100%',
           maxWidth: 576
         }}>
