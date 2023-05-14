@@ -32,7 +32,7 @@ function MarkCard({ mark }: {
 ) {
 
   return (
-    <Card>
+    <Card className="mb-2">
       <Card.Body>
         <Card.Text>
           Nota: {mark.markDetails.value} <br />
@@ -53,7 +53,7 @@ function AbsenceCard({ absence }: {
 ) {
 
   return (
-    <Card>
+    <Card className="mb-2">
       <Card.Body>
         <Card.Text>
           Absenta: {absence.subject.name} <br />
