@@ -19,6 +19,50 @@ import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import Navbar from '../components/Navbar';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import './StudentScreen.css';
+
+function MarkCard({ mark }: {
+  mark: {
+    markDetails: { value: number, createdAt: string },
+    subject: { name: string }
+  }
+}
+) {
+
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Text>
+          Nota: {mark.markDetails.value} <br />
+          {mark.subject.name} <br />
+          Data: {new Date(mark.markDetails.createdAt).toLocaleString()}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  )
+}
+
+function AbsenceCard({ absence }: {
+  absence: {
+    absenceDetails: { createdAt: string },
+    subject: { name: string }
+  }
+}
+) {
+
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Text>
+          Absenta: {absence.subject.name} <br />
+          Data: {new Date(absence.absenceDetails.createdAt).toLocaleString()}
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  )
+}
 
 function StudentScreen() {
   const [validated, setValidated] = useState(false);
@@ -81,23 +125,40 @@ function StudentScreen() {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Container style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
-        <Row style={{ height: '100%' }}>
+      <Container style={{
+        // height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'auto'
+      }}>
+        <div
+          className='d-md-none mt-3'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto',
+          }}
+        >
+          <Tabs
+            defaultActiveKey="marks"
+            id="marks-and-absences-tabs"
+            style={{ flex: '0 0 auto' }}
+            className="mb-3"
+          >
+            <Tab eventKey="marks" title="Marks">
+              {marks.map(mark => <MarkCard mark={mark} />)}
+            </Tab>
+            <Tab eventKey="absences" title="Absences">
+              {absences.map(absence => <AbsenceCard absence={absence} />)}
+            </Tab>
+          </Tabs>
+        </div>
+        <Row className="d-none d-md-flex overflow-auto mt-3" style={{ height: '100%' }}>
           <Col style={{ height: '100%' }} className="overflow-auto">
             {marks.map(mark =>
               <Row>
                 <Col>
-                  {
-                    <Card>
-                      <Card.Body>
-                        <Card.Text>
-                          Nota: {mark.markDetails.value} <br />
-                          {mark.subject.name} <br />
-                          Data: {new Date(mark.markDetails.createdAt).toLocaleString()}
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                  }
+                  <MarkCard mark={mark} />
                 </Col>
               </Row>
             )}
@@ -106,14 +167,7 @@ function StudentScreen() {
             {absences.map(absence =>
               <Row>
                 <Col>
-                  <Card>
-                    <Card.Body>
-                      <Card.Text>
-                        Absenta: {absence.subject.name} <br />
-                        Data: {new Date(absence.absenceDetails.createdAt).toLocaleString()}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
+                  <AbsenceCard absence={absence} />
                 </Col>
               </Row>
             )}

@@ -76,7 +76,8 @@ function MainScreen() {
           <div
             className='d-flex flex-column'
             style={{
-              height: '100%'
+              height: '100%',
+              overflow: 'auto'
             }}
           >
             <Navbar />
