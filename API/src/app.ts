@@ -45,12 +45,25 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cookieParser());
     this.app.use(express.static(path.join(__dirname, 'public')));
-    
-    const sequelize = new Sequelize({
+
+    let DB_OPTIONS = {
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       host: process.env.DB_HOST,
+    };
+
+    if (process.env.DEV_MODE === 'development') {
+      DB_OPTIONS = {
+        username: process.env.LOCAL_DB_USERNAME,
+        password: process.env.LOCAL_DB_PASSWORD,
+        database: process.env.LOCAL_DB_NAME,
+        host: process.env.LOCAL_DB_HOST,
+      };
+    }
+    
+    const sequelize = new Sequelize({
+      ...DB_OPTIONS,
       dialect: 'mysql',
       dialectOptions: {
         connectTimeout: 100000
