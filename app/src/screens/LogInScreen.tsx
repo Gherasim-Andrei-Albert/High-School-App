@@ -90,16 +90,28 @@ function LogInScreen() {
                     try {
                       setSubmitting(false);
                       setLoading(true);
-                      const result =
+
+                      const tokenResponse =
                         await axiosClient.post('/tokens', values);
-                      if (result.status === 200) {
-                        localStorage.setItem('token', result.data.token);
-                        navigate('/');
-                      }
-                      else {
+                      if (tokenResponse.status !== 200) {
                         setLoginError(true);
                         setLoading(false);
+                        return;
                       }
+                      localStorage.setItem('token', tokenResponse.data.token);
+
+                      const userResponse =
+                        await axiosClient.get('/users');
+                      if (userResponse.status !== 200) {
+                        setLoginError(true);
+                        setLoading(false);
+                        return;
+                      }
+                      localStorage.setItem('role',
+                        userResponse.data.user.teacherDetails ? 'teacher' : 'student'
+                      );
+
+                      return navigate('/');
                     }
                     catch (err) {
                       setLoginError(true);
