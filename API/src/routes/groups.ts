@@ -22,10 +22,17 @@ router.get('/', async function (req, res, next) {
       include:[Teacher, Student]
     });
     if(user?.teacherDetails) {
-      let groups = (await Group.findAll({ include: [Lesson, Student] }))
-        .filter(group => group.lessons.find(
-          lesson => lesson.teacherId === user.teacherDetails.id
-        ));
+      let groups = (await Group.findAll({
+        include: [
+          {
+            model: Lesson,
+            where: {
+              teacherId : user.teacherDetails.id
+            }
+          },
+          Student,
+        ]
+      }));
       return res.json({groups});
     }
     return res.status(403).json({msg:'User is not a teacher.'})
