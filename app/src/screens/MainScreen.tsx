@@ -24,7 +24,6 @@ import Modal from 'react-bootstrap/Modal';
 
 function MainScreen() {
   const [validated, setValidated] = useState(false);
-  const [userFetchError, setUserFetchError] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] =
     useState<{
@@ -33,46 +32,21 @@ function MainScreen() {
     } | null>(null);
 
   useEffect(() => {
-    (async () => {
-      if (!localStorage.getItem('token')?.length) {
-        navigate('/login');
+    if (
+      !(
+        localStorage.getItem('token')
+        && localStorage.getItem('role')
+      )
+    ) {
+      navigate('/login', { replace: true });
         return;
-      }
-
-      try {
-        const response =
-          await axiosClient('/users');
-
-        if (response.status === 200) {
-          setUser(response.data.user);
-        }
-        else {
-          setUserFetchError(true);
-        }
-      } catch (err) {
-        setUserFetchError(true);
-      }
-    })();
+    }
   }, []);
 
   return (
     <>
-      <Modal show={userFetchError} onHide={() => { }}>
-        <Modal.Body className="p-0">
-          <Alert
-            className="m-0"
-            variant="danger"
-            onClose={() => { }}
-            dismissible={false}>
-            <Alert.Heading>Server or internet error!</Alert.Heading>
-            <p>
-              Check your internet connection and refresh the page.
-            </p>
-          </Alert>
-        </Modal.Body>
-      </Modal>
       {
-        (user !== null) && (
+        (localStorage.getItem('role')) && (
           <div
             className='d-flex flex-column'
             style={{
@@ -82,7 +56,7 @@ function MainScreen() {
           >
             <Navbar />
             {
-              user.teacherDetails ?
+              localStorage.getItem('role') === 'teacher' ?
                 <TeacherScreen />
                 : <StudentScreen />
             }
