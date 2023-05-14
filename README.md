@@ -12,6 +12,11 @@
     </a>
   </li>
   <li>
+    <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-live-demo-URL-">
+      Live demo URL
+    </a>
+  </li>
+  <li>
     <a href="https://github.com/Gherasim-Andrei-Albert/High-School-App#-project-architecture-">
       Project architecture
     </a>
@@ -88,6 +93,10 @@
     </a>
   </li>
 </ul>
+
+<h2> Live demo URL </h2>
+
+https://high-school-app.onrender.com
 
 <h2> Project architecture </h2>
 
