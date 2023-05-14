@@ -83,10 +83,6 @@ function StudentScreen() {
 
   useEffect(() => {
     (async () => {
-      if (!localStorage.getItem('token')?.length) {
-        navigate('/login');
-      }
-
       try {
         const marksResponse = await axiosClient('/marks');
         const absencesResponse = await axiosClient('/absences');
