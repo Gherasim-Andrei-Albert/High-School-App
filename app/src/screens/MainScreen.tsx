@@ -83,7 +83,7 @@ function MainScreen() {
             <Navbar />
             {
               user.teacherDetails ?
-                <TeacherScreen user={user} />
+                <TeacherScreen />
                 : <StudentScreen />
             }
           </div >

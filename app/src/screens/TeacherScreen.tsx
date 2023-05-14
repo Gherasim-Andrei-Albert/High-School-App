@@ -33,15 +33,16 @@ function OnGroupChangeFieldsReseter() {
   return <></>;
 }
 
-function TeacherScreen(props: {
-  user: { teacherDetails: { id: number } | null }
-}) {
+function TeacherScreen() {
   const [validated, setValidated] = useState(false);
+  const [userFetchError, setUserFetchError] = useState(false);
   const [groupsFetchError, setGroupsFetchError] = useState(false);
   const [absenceAddedSuccess, setAbsenceAddedSuccess] = useState(false);
   const [absenceAddedError, setAbsenceAddedError] = useState(false);
   const [markAddedSuccess, setMarkAddedSuccess] = useState(false);
   const [markAddedError, setMarkAddedError] = useState(false);
+  const [user, setUser] =
+    useState<{ teacherDetails: { id: number } } | null>(null);
   const [groups, setGroups] = useState<{
     id: number,
     grade: number,
@@ -63,18 +64,24 @@ function TeacherScreen(props: {
 
   useEffect(() => {
     (async () => {
-      if (!localStorage.getItem('token')?.length) {
-        navigate('/login');
-      }
       try {
+
+        const userResponse = await axiosClient.get('/users');
+        if (userResponse.status !== 200) {
+          setUserFetchError(true)
+          return;
+        }
+        const { user } = userResponse.data;
+        setUser(user);
+
         const groupsResponse = await axiosClient.get('/groups');
-        if (groupsResponse.status === 200) {
-          const { groups } = groupsResponse.data;
-          setGroups(groups);
-        }
-        else {
+        if (groupsResponse.status !== 200) {
           setGroupsFetchError(true)
+          return;
         }
+        const { groups } = groupsResponse.data;
+        setGroups(groups);
+
       }
       catch (err) {
         setGroupsFetchError(true)
@@ -86,6 +93,24 @@ function TeacherScreen(props: {
 
   return (
     <>
+      <Modal show={userFetchError} onHide={() => { }}>
+        <Modal.Body className="p-0">
+          <Alert
+            className="m-0"
+            variant="danger"
+            onClose={() => { }}
+            dismissible={false}
+          >
+            <Alert.Heading>
+              Error! Coudn't download teacher profile.
+            </Alert.Heading>
+            <p>
+              Server or internet error.
+              Check your internet connection and refresh the page.
+            </p>
+          </Alert>
+        </Modal.Body>
+      </Modal>
       <Modal show={groupsFetchError} onHide={() => { }}>
         <Modal.Body className="p-0">
           <Alert
@@ -300,10 +325,11 @@ function TeacherScreen(props: {
                       )
                     }
                     {
+                      user &&
                       groups.find(
                         group => group.id == values.groupId
                       )?.lessons?.filter(lesson =>
-                        lesson.teacherId === props.user.teacherDetails?.id
+                        lesson.teacherId === user.teacherDetails?.id
                       )?.map(({ id, weekday, startTime }) => {
                         const weekdayName =
                           Info.weekdays('long', { locale: 'ro' })[weekday - 1];
