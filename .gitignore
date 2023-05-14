@@ -130,6 +130,7 @@ dist
 .pnp.*
 
 /API/config
+/app/config
 config.env
 
 build
