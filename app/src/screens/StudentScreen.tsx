@@ -56,7 +56,7 @@ function AbsenceCard({ absence }: {
     <Card className="mb-2">
       <Card.Body>
         <Card.Text>
-          Absenta: {absence.subject.name} <br />
+          Absență: {absence.subject.name} <br />
           Data: {new Date(absence.absenceDetails.createdAt).toLocaleString()}
         </Card.Text>
       </Card.Body>
