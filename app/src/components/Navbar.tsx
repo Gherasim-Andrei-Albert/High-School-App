@@ -16,6 +16,7 @@ function Navbar() {
           <Nav.Item className="ml-auto">
             <Button variant="secondary" onClick={() => {
               localStorage.removeItem('token');
+              localStorage.removeItem('role');
               navigate('/login')
             }}>
               Log out
