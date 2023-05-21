@@ -37,6 +37,7 @@ function TeacherScreen() {
   const [validated, setValidated] = useState(false);
   const [groupsFetchError, setGroupsFetchError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [slowLoading, setSlowLoading] = useState(false);
   const [absenceAddedSuccess, setAbsenceAddedSuccess] = useState(false);
   const [absenceAddedError, setAbsenceAddedError] = useState(false);
   const [markAddedSuccess, setMarkAddedSuccess] = useState(false);
@@ -77,6 +78,20 @@ function TeacherScreen() {
     })();
   }, []);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (loading) {
+      timer = setTimeout(() => {
+        setSlowLoading(true);
+      }, 10 * 1000);
+    } else {
+      setSlowLoading(false);
+    }
+
+    return () => clearTimeout(timer);
+  }, [loading]);
+
   let submitAction: string | undefined = undefined;
 
   return (
@@ -96,9 +111,9 @@ function TeacherScreen() {
           </Alert>
         </Modal.Body>
       </Modal>
-      <Modal className="opacity-50" show={loading} fullscreen animation={false} onHide={() => { }}>
+      <Modal show={loading} fullscreen animation={false} onHide={() => { }}>
         <Modal.Body
-          className="d-flex align-items-center justify-content-center">
+          className="d-flex align-items-center justify-content-center flex-column">
           <Spinner
             animation="border"
             role="status"
@@ -109,6 +124,15 @@ function TeacherScreen() {
             }}>
             <span className="visually-hidden">Loading...</span>
           </Spinner>
+          {slowLoading && (
+            <Alert className="mt-3 mb-0">
+              <p className="m-0">
+                It might take up to 60 seconds.
+                <br />
+                Server is waiking up or internet connection is slow.
+              </p>
+            </Alert>
+          )}
         </Modal.Body>
       </Modal>
       <Modal show={absenceAddedError} onHide={() => setAbsenceAddedError(false)}>
