@@ -36,6 +36,7 @@ function OnGroupChangeFieldsReseter() {
 function TeacherScreen() {
   const [validated, setValidated] = useState(false);
   const [groupsFetchError, setGroupsFetchError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [absenceAddedSuccess, setAbsenceAddedSuccess] = useState(false);
   const [absenceAddedError, setAbsenceAddedError] = useState(false);
   const [markAddedSuccess, setMarkAddedSuccess] = useState(false);
@@ -93,6 +94,21 @@ function TeacherScreen() {
               Check your internet connection and refresh the page.
             </p>
           </Alert>
+        </Modal.Body>
+      </Modal>
+      <Modal className="opacity-50" show={loading} fullscreen animation={false} onHide={() => { }}>
+        <Modal.Body
+          className="d-flex align-items-center justify-content-center">
+          <Spinner
+            animation="border"
+            role="status"
+            variant='primary'
+            style={{
+              width: 100,
+              height: 100,
+            }}>
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
         </Modal.Body>
       </Modal>
       <Modal show={absenceAddedError} onHide={() => setAbsenceAddedError(false)}>
@@ -176,6 +192,8 @@ function TeacherScreen() {
             switch (submitAction) {
               case 'addAbsence': {
                 try {
+                  setLoading(true);
+
                   const result =
                     await axiosClient.post('/absences', values);
 
@@ -189,12 +207,18 @@ function TeacherScreen() {
                 catch (err) {
                   setAbsenceAddedError(true);
                 }
+                finally {
+                  setLoading(false);
+                }
                 break;
               }
               case 'addMark': {
                 try {
+                  setLoading(true);
+
                   const result =
                     await axiosClient.post('/marks', values);
+
                   if (result.status === 200) {
                     setMarkAddedSuccess(true);
                   }
@@ -204,6 +228,9 @@ function TeacherScreen() {
                 }
                 catch (err) {
                   setMarkAddedError(true);
+                }
+                finally {
+                  setLoading(false);
                 }
                 break;
               }
