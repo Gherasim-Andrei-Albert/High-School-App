@@ -22,6 +22,7 @@ import Navbar from '../components/Navbar';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import './StudentScreen.css';
+import Spinner from 'react-bootstrap/Spinner';
 
 function MarkCard({ mark }: {
   mark: {
@@ -67,6 +68,7 @@ function AbsenceCard({ absence }: {
 function StudentScreen() {
   const [validated, setValidated] = useState(false);
   const [fetchError, setFetchError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [marks, setMarks] =
     useState<{
@@ -84,6 +86,7 @@ function StudentScreen() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const marksResponse = await axiosClient('/marks');
         const absencesResponse = await axiosClient('/absences');
         if (marksResponse.status === 200
@@ -91,14 +94,17 @@ function StudentScreen() {
           const { marks } = marksResponse.data;
           const { absences } = absencesResponse.data;
           console.log({ marks, absences });
+          setLoading(false);
           setMarks(marks);
           setAbsences(absences);
         }
         else {
+          setLoading(false);
           setFetchError(true);
         }
       }
       catch (err) {
+        setLoading(false);
         setFetchError(true);
       }
     })();
@@ -122,10 +128,10 @@ function StudentScreen() {
         </Modal.Body>
       </Modal>
       <Container style={{
-        // height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'auto'
+        overflow: 'auto',
+        flex: 1,
       }}>
         <div
           className='d-md-none mt-3'
@@ -133,6 +139,7 @@ function StudentScreen() {
             display: 'flex',
             flexDirection: 'column',
             overflow: 'auto',
+            flex: 1,
           }}
         >
           <Tabs
@@ -142,33 +149,90 @@ function StudentScreen() {
             className="mb-3"
           >
             <Tab eventKey="marks" title="Marks">
-              {marks.map(mark => <MarkCard mark={mark} />)}
+              {
+                loading ?
+                  (
+                    <Spinner
+                      className='d-flex d-md-none'
+                      animation="border"
+                      role="status"
+                      variant='primary'
+                      style={{
+                        width: 100,
+                        height: 100,
+                        margin: 'auto',
+                      }}>
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  )
+                  : (
+                    marks.map(mark => <MarkCard mark={mark} />)
+                  )
+              }
             </Tab>
             <Tab eventKey="absences" title="Absences">
-              {absences.map(absence => <AbsenceCard absence={absence} />)}
+              {
+                loading ?
+                  (
+                    <Spinner
+                      className='d-flex d-md-none'
+                      animation="border"
+                      role="status"
+                      variant='primary'
+                      style={{
+                        width: 100,
+                        height: 100,
+                        margin: 'auto',
+                      }}>
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  )
+                  : (
+                    absences.map(absence => <AbsenceCard absence={absence} />)
+                  )
+              }
             </Tab>
           </Tabs>
         </div>
-        <Row className="d-none d-md-flex overflow-auto mt-3" style={{ height: '100%' }}>
-          <Col style={{ height: '100%' }} className="overflow-auto">
-            {marks.map(mark =>
-              <Row>
-                <Col>
-                  <MarkCard mark={mark} />
+        {
+          loading ?
+            (
+              <Spinner
+                className='d-none d-md-flex'
+                animation="border"
+                role="status"
+                variant='primary'
+                style={{
+                  width: 100,
+                  height: 100,
+                  margin: 'auto',
+                }}>
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )
+            : (
+              <Row className="d-none d-md-flex overflow-auto mt-3" style={{ height: '100%' }}>
+                <Col style={{ height: '100%' }} className="overflow-auto">
+                  {marks.map(mark =>
+                    <Row>
+                      <Col>
+                        <MarkCard mark={mark} />
+                      </Col>
+                    </Row>
+                  )}
+                </Col>
+                <Col style={{ height: '100%' }} className="overflow-auto">
+                  {absences.map(absence =>
+                    <Row>
+                      <Col>
+                        <AbsenceCard absence={absence} />
+                      </Col>
+                    </Row>
+                  )}
                 </Col>
               </Row>
-            )}
-          </Col>
-          <Col style={{ height: '100%' }} className="overflow-auto">
-            {absences.map(absence =>
-              <Row>
-                <Col>
-                  <AbsenceCard absence={absence} />
-                </Col>
-              </Row>
-            )}
-          </Col>
-        </Row>
+            )
+        }
       </Container>
     </>
   );

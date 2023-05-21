@@ -1,3 +1,11 @@
 .tab-content {
+  display: flex;
+    flex: 1;
+    flex-direction: column;
   overflow: auto;
+}
+.tab-content>.active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
